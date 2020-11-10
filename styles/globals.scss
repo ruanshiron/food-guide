@@ -1,0 +1,45 @@
+@import "~antd/dist/antd.css";
+
+.ant-layout-header {
+  background-color: #fff;
+  height: 66px;
+  padding: 0px 50px;
+}
+
+.ant-menu-horizontal {
+  border: none
+}
+
+@media only screen and (max-width: 576px) {
+  .ant-layout-header {
+    padding: 0px;
+  }
+}
+
+.container {
+  padding-right: 15px;
+  padding-left: 15px;
+  margin-right: auto;
+  margin-left: auto;
+  // fixed it
+  max-width: 750px;
+  min-height: 100vh;
+}
+
+@media (min-width: 768px) {
+  .container {
+    width: 750px;
+  }
+}
+
+@media (min-width: 992px) {
+  .container {
+    width: 970px;
+  }
+}
+
+@media (min-width: 1200px) {
+  .container {
+    width: 1170px;
+  }
+}
