@@ -6,13 +6,13 @@ import Head from "next/head";
 const listData = [];
 for (let i = 0; i < 23; i++) {
   listData.push({
-    href: "https://ant.design",
-    title: `ant design part ${i}`,
+    href: "/recipes",
+    title: `レシピ ${i}`,
     avatar: "https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png",
     description:
-      "Ant Design, a design language for background applications, is refined by Ant UED Team.",
+      "変ソリオ定都来記リ行識視ゅる会3価ソネフ部本ぴめけス会強ひ野供スせ和覧サア買謙テシ事設刈け。万衡採ノ半報リイシ青優イモ俊打ケシ禁容ぶぞぽ果軒あねぽ属属ネヱミ会支めじほ輝債加ミメ続紙載わん得校んるへめ広政はだて想59炭熟耳預2紹べゅき平難とゆめ否越腕披へ。",
     content:
-      "We supply a series of design principles, practical patterns and high quality design resources (Sketch and Axure), to help people create their product prototypes beautifully and efficiently.",
+      "期いク応武ワ平前く会子げリ阿趣ソ合死ヘキ認菓ま早79検フウ拠和てせク米姿ゆゅ度67作ネ索気づしこっ女刃尿憎潔ふざラ。",
   });
 }
 
@@ -26,7 +26,7 @@ const IconText = ({ icon, text }) => (
 export default function Home() {
   return (
     <>
-      <Typography>Recipes</Typography>
+      <h1>レシピをよむ一覧</h1>
       <List
         itemLayout="vertical"
         size="large"
@@ -53,7 +53,7 @@ export default function Home() {
             ]}
             extra={
               <img
-                height={128}
+                height={118}
                 alt="logo"
                 src="https://gw.alipayobjects.com/zos/rmsportal/mqaQswcyDLcXyDKnZfES.png"
               />

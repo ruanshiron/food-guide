@@ -18,7 +18,7 @@ const Navbar = () => {
               <Link href="/">Food Guide</Link>
             </Menu.Item>
             <Menu.Item key="app" >
-              <Link href="/recipes">Category</Link>
+              <Link href="/recipes">レシピをよむ</Link>
             </Menu.Item>
           </Menu>
         </Col>

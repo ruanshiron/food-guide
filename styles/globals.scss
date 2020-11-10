@@ -1,6 +1,11 @@
 @import "~antd/dist/antd.css";
 
+.ant-layout {
+  background-color: #fff;
+}
+
 .ant-layout-header {
+  border-bottom: solid #D9D9D9 1px;
   background-color: #fff;
   height: 66px;
   padding: 0px 50px;
@@ -22,6 +27,8 @@
   margin-right: auto;
   margin-left: auto;
   // fixed it
+  margin-top: 30px;
+  margin-bottom: 30px;
   max-width: 750px;
   min-height: 100vh;
 }
