@@ -2,11 +2,12 @@ import { Typography, List, Space } from "antd";
 import React from "react"
 import { MessageOutlined, LikeOutlined, StarOutlined } from '@ant-design/icons';
 import Head from "next/head";
+import Link from "next/link";
 
 const listData = [];
 for (let i = 0; i < 23; i++) {
   listData.push({
-    href: "/recipes",
+    href: `/recipes/${i}`,
     title: `レシピ ${i}`,
     avatar: "https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png",
     description:
@@ -60,7 +61,7 @@ export default function Home() {
             }
           >
             <List.Item.Meta
-              title={<a href={item.href}>{item.title}</a>}
+              title={<Link href={item.href}>{item.title}</Link>}
               description={item.description}
             />
           </List.Item>
