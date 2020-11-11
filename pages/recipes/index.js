@@ -24,9 +24,9 @@ const IconText = ({ icon, text }) => (
   </Space>
 );
 
-export default function Home() {
+export default function Recipes() {
   return (
-    <>
+    <div className="container">
       <h1>レシピをよむ一覧</h1>
       <List
         itemLayout="vertical"
@@ -67,6 +67,6 @@ export default function Home() {
           </List.Item>
         )}
       />
-    </>
+    </div>
   );
 }

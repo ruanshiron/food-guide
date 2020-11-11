@@ -34,7 +34,7 @@ const Navbar = () => {
           <Search
             style={{ display: "block", margin: "auto" }}
             size="large"
-            placeholder="input search text"
+            placeholder="料理名・食材でレシピをさがす"
           />
         </Col>
         <Col span={4} sm={6}></Col>

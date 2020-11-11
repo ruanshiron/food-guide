@@ -12,7 +12,7 @@ const Main = ({ children }) => {
       </Head>
       <Layout>
         <Navbar />
-        <Content className="container">{children}</Content>
+        <Content>{children}</Content>
         <Footer style={{ textAlign: "center" }}>
           Food Guide develop by AmongUsss
         </Footer>

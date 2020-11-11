@@ -22,7 +22,7 @@ export default function Recipe() {
   const router = useRouter();
   const id = router.query.id;
   return (
-    <>
+    <div className="container">
       <div style={{ paddingBottom: "30px" }}>
         <p>2020.20.10</p>
         <Image
@@ -110,6 +110,6 @@ export default function Recipe() {
           <Comment />
         </Typography>
       </div>
-    </>
+    </div>
   );
 }
