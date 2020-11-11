@@ -1,7 +1,8 @@
-import { Button, Divider, Image, List, Typography } from "antd";
+import { Button, Divider, Image, List, Typography, Rate } from "antd";
 import { useRouter } from "next/router";
 import { FireOutlined, HeartOutlined } from "@ant-design/icons";
 import Comment from '../../components/Comment'
+import Item from "antd/lib/list/Item";
 const { Title, Paragraph, Text, Link } = Typography;
 
 const ingredients = [
@@ -46,14 +47,15 @@ export default function Recipe() {
             カロリー: <Text strong>3000</Text>
           </Paragraph> */}
         </Typography>
-        <Button
+        <Item><Rate allowHalf defaultValue={3.5} disabled /></Item>
+        {/* <Button
           type="primary"
           shape="round"
           icon={<HeartOutlined />}
           size="large"
         >
           お気に入り
-        </Button>
+        </Button> */}
       </div>
 
       <div style={{ paddingBottom: "30px" }}>
@@ -100,6 +102,14 @@ export default function Recipe() {
             電子レンジで下処理をするので、時短・簡便！大根に鶏ガラスープのうまみが染み込んで、優しくホッとする味わいです。鶏ひき肉の入った、とろりとした餡が大根にからみ、とってもおいしいですよ。ぜひお試しください！
           </Paragraph>
         </Typography>
+      </div>
+
+      <div style={{ paddingBottom: "30px" }}>
+        <Divider orientation="left">
+          <h1>評価</h1>
+        </Divider>
+  
+        <Item style={{ paddingLeft: 50 }}><Rate /><Button　type="primary"　shape="round">送信</Button></Item>
       </div>
 
       <div style={{ paddingBottom: "30px" }}>
