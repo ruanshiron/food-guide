@@ -39,12 +39,12 @@ export default function Recipe() {
             優しい味わい！大根のそぼろ煮」の作り方を簡単で分かりやすいレシピ動画で紹介しています。
             電子レンジで下処理をするので、時短・簡便！大根に鶏ガラスープのうまみが染み込んで、優しくホッとする味わいです。鶏ひき肉の入った、とろりとした餡が大根にからみ、とってもおいしいですよ。ぜひお試しください！
           </Paragraph>
-          <Paragraph>調理時間：30分</Paragraph>
+          {/* <Paragraph>調理時間：30分</Paragraph>
           <Paragraph>費用目安：300円前後</Paragraph>
           <Paragraph>
             <FireOutlined style={{ marginRight: "4px" }} />
             カロリー: <Text strong>3000</Text>
-          </Paragraph>
+          </Paragraph> */}
         </Typography>
         <Button
           type="primary"
