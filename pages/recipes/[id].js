@@ -1,6 +1,7 @@
 import { Button, Divider, Image, List, Typography } from "antd";
 import { useRouter } from "next/router";
 import { FireOutlined, HeartOutlined } from "@ant-design/icons";
+import Comment from '../../components/Comment'
 const { Title, Paragraph, Text, Link } = Typography;
 
 const ingredients = [
@@ -98,6 +99,15 @@ export default function Recipe() {
             優しい味わい！大根のそぼろ煮」の作り方を簡単で分かりやすいレシピ動画で紹介しています。
             電子レンジで下処理をするので、時短・簡便！大根に鶏ガラスープのうまみが染み込んで、優しくホッとする味わいです。鶏ひき肉の入った、とろりとした餡が大根にからみ、とってもおいしいですよ。ぜひお試しください！
           </Paragraph>
+        </Typography>
+      </div>
+
+      <div style={{ paddingBottom: "30px" }}>
+        <Divider orientation="left">
+          <h1>コメント</h1>
+        </Divider>
+        <Typography>
+          <Comment />
         </Typography>
       </div>
     </>
