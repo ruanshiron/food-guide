@@ -1,11 +1,12 @@
-import { Typography, List, Space } from "antd";
-import React from "react"
-import { MessageOutlined, LikeOutlined, StarOutlined } from '@ant-design/icons';
+import { Typography, List, Space, Button } from "antd";
+import React from "react";
+import { MessageOutlined, LikeOutlined, StarOutlined } from "@ant-design/icons";
 import Head from "next/head";
 import Link from "next/link";
+import { useRouter } from "next/router";
 
 const listData = [];
-for (let i = 0; i < 23; i++) {
+for (let i = 0; i < 10; i++) {
   listData.push({
     href: `/recipes/${i}`,
     title: `レシピ ${i}`,
@@ -25,11 +26,26 @@ const IconText = ({ icon, text }) => (
 );
 
 export default function Recipes() {
+  const router = useRouter();
+  const { q } = router.query;
+  const loadMore = (
+    <div
+      style={{
+        textAlign: "center",
+        marginTop: 12,
+        height: 32,
+        lineHeight: "32px",
+      }}
+    >
+      <Button>もっと</Button>
+    </div>
+  );
   return (
     <div className="container">
-      <h1>レシピをよむ一覧</h1>
+      <h1>{q ? "検索の結果" : "レシピをよむ一覧"}</h1>
       <List
         itemLayout="vertical"
+        loadMore={loadMore}
         size="large"
         dataSource={listData}
         renderItem={(item) => (
@@ -51,7 +67,7 @@ export default function Recipes() {
               <img
                 height={118}
                 alt="logo"
-                src="https://gw.alipayobjects.com/zos/rmsportal/mqaQswcyDLcXyDKnZfES.png"
+                src="https://video.kurashiru.com/production/articles/9821ea0f-be7f-4817-8f65-aace3fae6257/wide_thumbnail_large.png"
               />
             }
           >

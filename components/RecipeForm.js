@@ -1,5 +1,11 @@
-import { Form, Input, Button, Select, Upload, Space } from "antd";
-import { UploadOutlined, InboxOutlined, MinusCircleOutlined, PlusOutlined } from '@ant-design/icons';
+import { Form, Input, Button, Select, Upload, Space, Row, Col } from "antd";
+import {
+  UploadOutlined,
+  InboxOutlined,
+  MinusCircleOutlined,
+  PlusOutlined,
+} from "@ant-design/icons";
+import TextArea from "antd/lib/input/TextArea";
 
 const { Option } = Select;
 
@@ -25,30 +31,30 @@ const formItemLayoutWithOutLabel = {
   },
 };
 
-const normFile = e => {
-  console.log('Upload event:', e);
+const normFile = (e) => {
+  console.log("Upload event:", e);
   if (Array.isArray(e)) {
     return e;
   }
   return e && e.fileList;
 };
 
-const AddRecipeForm = () => {
+const RecipeForm = () => {
   const [form] = Form.useForm();
 
-  const onGenderChange = value => {
+  const onGenderChange = (value) => {
     switch (value) {
-      case '1':
-        form.setFieldsValue({ note: 'Hi, man!' });
+      case "1":
+        form.setFieldsValue({ note: "Hi, man!" });
         return;
-      case '2':
-        form.setFieldsValue({ note: 'Hi, lady!' });
+      case "2":
+        form.setFieldsValue({ note: "Hi, lady!" });
         return;
-      case '3':
-        form.setFieldsValue({ note: 'Hi there!' });
+      case "3":
+        form.setFieldsValue({ note: "Hi there!" });
         return;
     }
-  }
+  };
 
   return (
     <>
@@ -72,7 +78,7 @@ const AddRecipeForm = () => {
         <Form.Item name="description" label="説明">
           <Input.TextArea />
         </Form.Item>
-        
+
         <Form.Item
           name="写真"
           label="写真"
@@ -85,83 +91,56 @@ const AddRecipeForm = () => {
         </Form.Item>
 
         <Form.Item label="ビデオ">
-          <Form.Item name="video" valuePropName="fileList" getValueFromEvent={normFile} noStyle>
+          <Form.Item
+            name="video"
+            valuePropName="fileList"
+            getValueFromEvent={normFile}
+            noStyle
+          >
             <Upload.Dragger name="files" action="/upload.do">
               <p className="ant-upload-drag-icon">
                 <InboxOutlined />
               </p>
-              <p className="ant-upload-text">クリックまたドロップしてアップロードする</p>
+              <p className="ant-upload-text">
+                クリックまたドロップしてアップロードする
+              </p>
             </Upload.Dragger>
           </Form.Item>
         </Form.Item>
 
-        <Form.List name="steps" >
+        <Form.List name="ingredients">
           {(fields, { add, remove }, { errors }) => (
             <>
               {fields.map((field, index) => (
                 <Form.Item
-                  {...(index === 0 ? formItemLayout : formItemLayoutWithOutLabel)}
-                  label={index === 0 ? '作り方' : ''}
+                  {...(index === 0
+                    ? formItemLayout
+                    : formItemLayoutWithOutLabel)}
+                  label={index === 0 ? "材料" : ""}
                   required={false}
                   key={field.key}
                 >
-                  <Form.Item
-                    {...field}
-                    validateTrigger={['onChange', 'onBlur']}
-                  >
-                    <Input placeholder="材料を入力" style={{ width: '70%' }} />
-                  </Form.Item>
-                  <MinusCircleOutlined
-                    onClick={() => remove(field.name)}
-                  />
+                  <Row gutter={8}>
+                    <Col>
+                      <Input placeholder="マンゴ" />
+                    </Col>
+                    <Col>
+                      <Input placeholder="20gram" />
+                    </Col>
+                    <Col>
+                      <MinusCircleOutlined
+                        className="dynamic-delete-button"
+                        onClick={() => remove(field.name)}
+                      />
+                    </Col>
+                  </Row>
                 </Form.Item>
               ))}
-              <Form.Item>
+              <Form.Item {...formItemLayoutWithOutLabel}>
                 <Button
                   type="dashed"
                   onClick={() => add()}
-                  style={{ marginLeft: '23%', width: '60%' }}
-                  icon={<PlusOutlined />}
-                >
-                  作り方を追加
-                </Button>
-              </Form.Item>
-            </>
-          )}
-        </Form.List>
-
-        <Form.List name="ingredients">
-          {(fields, { add, remove }) => (
-            <>
-              {fields.map((field, index) => (
-                <Form.Item
-                  {...(index === 0 ? formItemLayout : formItemLayoutWithOutLabel)}
-                  label={index === 0 ? '材料' : ''}
-                  required={false}
-                  key={field.key}
-                >
-                  <Form.Item
-                    {...field}
-                    name={[field.name, 'first']}
-                    fieldKey={[field.fieldKey, 'first']}
-                  >
-                    <Input placeholder="材料名" style={{ width: '70%' }} />
-                  </Form.Item>
-                  <Form.Item
-                    {...field}
-                    name={[field.name, 'last']}
-                    fieldKey={[field.fieldKey, 'last']}
-                  >
-                    <Input placeholder="分量" style={{ width: '70%' }} />
-                  </Form.Item>
-                  <MinusCircleOutlined onClick={() => remove(field.name)} />
-                </Form.Item>
-              ))}
-              <Form.Item>
-                <Button
-                  type="dashed"
-                  onClick={() => add()}
-                  style={{ marginLeft: '23%', width: '60%' }}
+                  style={{ width: "70%" }}
                   icon={<PlusOutlined />}
                 >
                   材料を追加
@@ -171,13 +150,54 @@ const AddRecipeForm = () => {
           )}
         </Form.List>
 
+        <Form.List name="steps">
+          {(fields, { add, remove }, { errors }) => (
+            <>
+              {fields.map((field, index) => (
+                <Form.Item
+                  {...(index === 0
+                    ? formItemLayout
+                    : formItemLayoutWithOutLabel)}
+                  label={index === 0 ? "作り方" : ""}
+                  required={false}
+                  key={field.key}
+                >
+                  <Form.Item
+                    {...field}
+                    validateTrigger={["onChange", "onBlur"]}
+                    noStyle
+                  >
+                    <TextArea
+                      placeholder="材料を入力"
+                      style={{ width: "80%" }}
+                    />
+                  </Form.Item>
+                  <MinusCircleOutlined
+                    className="dynamic-delete-button"
+                    onClick={() => remove(field.name)}
+                  />
+                </Form.Item>
+              ))}
+              <Form.Item {...formItemLayoutWithOutLabel}>
+                <Button
+                  type="dashed"
+                  onClick={() => add()}
+                  style={{ width: "70%" }}
+                  icon={<PlusOutlined />}
+                >
+                  作り方を追加
+                </Button>
+              </Form.Item>
+            </>
+          )}
+        </Form.List>
+
         <Form.Item name="point" label="ポイント">
           <Input.TextArea />
         </Form.Item>
-
       </Form>
     </>
   );
 };
 
-export default AddRecipeForm;
+export default RecipeForm;

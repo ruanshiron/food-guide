@@ -1,5 +1,6 @@
 import { Typography, Divider, Row, Col, Card, Tag } from "antd";
 import Link from "next/link";
+import { useRouter } from "next/router";
 
 const data = [
   {
@@ -63,6 +64,11 @@ const chefs = [
 ];
 
 export default function Home() {
+  const router = useRouter();
+
+  const handleRecipeClick = (e, i) => {
+    router.push(`/recipes/${i}`);
+  };
   return (
     <div className="container container-lg">
       <Row>
@@ -84,15 +90,14 @@ export default function Home() {
           </Divider>
           <Row gutter={16}>
             {data.map((item, index) => (
-              <Col span={8}>
+              <Col key={index} span={8}>
                 <Card
                   style={{ marginBottom: 16 }}
                   hoverable
                   cover={<img alt="example" src={item.src} />}
+                  onClick={(e) => handleRecipeClick(e, index)}
                 >
-                  <Link href={`/recipes/${index}`}>
-                    <Card.Meta title={item.title} />
-                  </Link>
+                  <Card.Meta title={item.title} />
                 </Card>
               </Col>
             ))}
@@ -114,12 +119,12 @@ export default function Home() {
           <div style={{ marginBottom: 15 }}>
             <h2>最高のシェフ</h2>
             <Row gutter={8}>
-              {chefs.map((chef) => (
-                <Col style={{ marginBottom: 8 }} xs={8} md={12}>
+              {chefs.map((chef, index) => (
+                <Col key={index} style={{ marginBottom: 8 }} xs={8} md={12}>
                   <img
                     width={"100%"}
                     height={156}
-                    style={{ objectFit: "cover" }}
+                    style={{ objectFit: "cover", borderRadius: 8 }}
                     src={chef.src}
                   />
                 </Col>
