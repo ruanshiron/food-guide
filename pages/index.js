@@ -1,6 +1,9 @@
-import { Typography, Divider, Row, Col, Card, Tag } from "antd";
+import { Typography, Divider, Row, Col, Card, Tag, Spin } from "antd";
+import { LoadingOutlined } from "@ant-design/icons";
 import Link from "next/link";
 import { useRouter } from "next/router";
+import { storage, database } from "../config/firebaseConfig"
+import { useState, useEffect } from "react";
 
 const data = [
   {
@@ -63,13 +66,39 @@ const chefs = [
   },
 ];
 
+const storageRef = storage.ref();
+const antIcon = <LoadingOutlined style={{ fontSize: 36 }} spin />;
+
 export default function Home() {
   const router = useRouter();
+  const [recipes, setRecipes] = useState([])
+  const [loading, setLoading] = useState(true)
 
   const handleRecipeClick = (e, i) => {
     router.push(`/recipes/${i}`);
   };
+
+  useEffect(() => {
+    async function getData() {
+      const ref = database.collection('recipes').orderBy('title').limit(6)
+      const docs = await ref.get()
+      docs.forEach(async(doc) => {
+        let image_url = await storageRef.child(`recipes/${doc.data().image}.png`).getDownloadURL()
+        let recipe = {
+          title: doc.data().title,
+          id: doc.id,
+          src: image_url
+        }
+        setRecipes(recipes => [...recipes, recipe])
+      });
+      setLoading(false)
+    }
+    
+    getData()
+  }, [])
+
   return (
+    loading ? <div style={{ textAlign: 'center' }} className="container" ><Spin spinning={true} indicator={antIcon}></Spin></div> :
     <div className="container container-lg">
       <Row>
         <Col style={{ padding: 15 }} xs={24} md={18}>
@@ -89,13 +118,13 @@ export default function Home() {
             <h2>今日のオススメ</h2>
           </Divider>
           <Row gutter={16}>
-            {data.map((item, index) => (
+            {recipes.map((item, index) => (
               <Col key={index} span={8}>
                 <Card
                   style={{ marginBottom: 16 }}
                   hoverable
                   cover={<img alt="example" src={item.src} />}
-                  onClick={(e) => handleRecipeClick(e, index)}
+                  onClick={(e) => handleRecipeClick(e, item.id)}
                 >
                   <Card.Meta title={item.title} />
                 </Card>

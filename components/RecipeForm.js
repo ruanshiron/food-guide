@@ -1,9 +1,10 @@
-import { Form, Input, Button, Select, Upload, Space, Row, Col } from "antd";
+import { Form, Input, Button, Select, Upload, Spin, Row, Col } from "antd";
 import {
   UploadOutlined,
   InboxOutlined,
   MinusCircleOutlined,
   PlusOutlined,
+  LoadingOutlined
 } from "@ant-design/icons";
 import { SaveOutlined } from "@ant-design/icons";
 import TextArea from "antd/lib/input/TextArea";
@@ -42,12 +43,15 @@ const normFile = (e) => {
   return e && e.fileList;
 };
 
+const antIcon = <LoadingOutlined style={{ fontSize: 36 }} spin />;
+
 const RecipeForm = ({ onSubmitForm }) => {
   const [form] = Form.useForm();
   const [image, setImage] = useState()
   const [putImageRef, setPutImageRef] = useState()
   const [video, setVideo] = useState()
   const [putVideoRef, setPutVideoRef] = useState()
+  const [loading, setLoading] = useState(false)
 
   const onGenderChange = (value) => {
     switch (value) {
@@ -101,12 +105,15 @@ const RecipeForm = ({ onSubmitForm }) => {
     const metadata2 = {
       contentType: 'video/mp4'
     }
+    setLoading(true)
     await putImageRef.put(image, metadata1);
     await putVideoRef.put(video, metadata2);
     onSubmitForm(values);
+    setLoading(false)
   }
 
   return (
+    loading ? <div style={{ textAlign: 'center' }} className="container" ><Spin tip={'Uploading...'} indicator={antIcon}></Spin></div> :
     <>
       <Form {...layout} form={form} name="control-hooks" onFinish={onFinish}>
         <Form.Item name="title" label="料理名" rules={[{ required: true, message: 'Please input title' }]}>
