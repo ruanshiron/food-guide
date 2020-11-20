@@ -1,5 +1,5 @@
 import { Typography, List, Space, Button } from "antd";
-import React from "react";
+import React, { useEffect } from "react";
 import { MessageOutlined, LikeOutlined, StarOutlined } from "@ant-design/icons";
 import Head from "next/head";
 import Link from "next/link";
