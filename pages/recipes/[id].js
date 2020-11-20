@@ -39,8 +39,8 @@ export default function Recipe() {
         console.log('No such document!')
       } else {
         let data = doc.data()
-        data.image = await storageRef.child(`recipes/${doc.data().image}.png`).getDownloadURL()
-        data.video = await storageRef.child(`recipes/${doc.data().video}.mp4`).getDownloadURL()
+        data.image = await storageRef.child(`recipes/${doc.data().image}`).getDownloadURL()
+        data.video = await storageRef.child(`recipes/${doc.data().video}`).getDownloadURL()
         setRecipe(data)
         setLoading(false)
       }

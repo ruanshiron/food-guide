@@ -15,9 +15,7 @@ const openNotification = () => {
 };
 
 const onSubmitForm = async(data) => {
-  data.image = data.image[0].uid
-  data.video = data.video[0].uid
-  const ref = await database.collection('recipes').add(data)
+  await database.collection('recipes').add(data)
   console.log(data)
   openNotification()
 }

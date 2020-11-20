@@ -83,7 +83,7 @@ export default function Home() {
       const ref = database.collection('recipes').orderBy('title').limit(6)
       const docs = await ref.get()
       docs.forEach(async(doc) => {
-        let image_url = await storageRef.child(`recipes/${doc.data().image}.png`).getDownloadURL()
+        let image_url = await storageRef.child(`recipes/${doc.data().image}`).getDownloadURL()
         let recipe = {
           title: doc.data().title,
           id: doc.id,

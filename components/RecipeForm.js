@@ -1,4 +1,4 @@
-import { Form, Input, Button, Select, Upload, Spin, Row, Col } from "antd";
+import { Form, Input, Button, Select, Upload, Spin, Row, Col, message } from "antd";
 import {
   UploadOutlined,
   InboxOutlined,
@@ -69,7 +69,8 @@ const RecipeForm = ({ onSubmitForm }) => {
 
   const customUploadImage = async({ onError, onSuccess, file }) => {
     const storageRef = await storage.ref();
-    const imgFile = storageRef.child(`recipes/${file.uid}.png`);
+    const fileExt = file.type.split('/').pop()
+    const imgFile = storageRef.child(`recipes/${file.uid}.${fileExt}`);
     try {
       onSuccess(null, imgFile);
       setPutImageRef(imgFile)
@@ -85,7 +86,8 @@ const RecipeForm = ({ onSubmitForm }) => {
 
   const customUploadVideo = async({ onError, onSuccess, file }) => {
     const storageRef = await storage.ref();
-    const videoFile = storageRef.child(`recipes/${file.uid}.mp4`);
+    const fileExt = file.type.split('/').pop()
+    const videoFile = storageRef.child(`recipes/${file.uid}.${fileExt}`);
     try {
       onSuccess(null, videoFile);
       setPutVideoRef(videoFile)
@@ -99,16 +101,14 @@ const RecipeForm = ({ onSubmitForm }) => {
   }
 
   const onFinish = async(values) => {
-    const metadata1 = {
-      contentType: 'image/jpeg'
-    }
-    const metadata2 = {
-      contentType: 'video/mp4'
-    }
     setLoading(true)
-    await putImageRef.put(image, metadata1);
-    await putVideoRef.put(video, metadata2);
+    await putImageRef.put(image);
+    await putVideoRef.put(video);
+
+    values.image = values.image[0].uid + '.' + values.image[0].type.split('/').pop()
+    values.video = values.video[0].uid + '.' + values.video[0].type.split('/').pop()
     onSubmitForm(values);
+    
     setLoading(false)
   }
 
