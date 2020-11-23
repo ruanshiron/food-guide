@@ -1,42 +1,7 @@
-import { Typography, Divider, Row, Col, Card, Tag, Spin } from "antd";
+import { Divider, Row, Col, Tag, Spin } from "antd";
 import { LoadingOutlined } from "@ant-design/icons";
-import Link from "next/link";
-import { useRouter } from "next/router";
-import { storage, database } from "../config/firebaseConfig"
-import { useState, useEffect } from "react";
-
-const data = [
-  {
-    title: "優しい味わい！大根のそぼろ煮",
-    src:
-      "https://video.kurashiru.com/production/videos/7ba2b9a0-52d0-4f88-b19d-a2e101983110/compressed_thumbnail_square_large.jpg?1472440610ng",
-  },
-  {
-    title: "大根のバタポンステーキ",
-    src:
-      "https://video.kurashiru.com/production/videos/a6fed850-d897-4ced-9855-55168ee50bb8/compressed_thumbnail_square_large.jpg?1475054146",
-  },
-  {
-    title: "千切りキャベツ山盛り！キャベツお好み焼き",
-    src:
-      "https://video.kurashiru.com/production/videos/32e91e87-7b9a-414f-b336-2f95e2e93533/compressed_thumbnail_square_large.jpg?1599532153",
-  },
-  {
-    title: "優しい味わい！大根のそぼろ煮",
-    src:
-      "https://video.kurashiru.com/production/videos/7ba2b9a0-52d0-4f88-b19d-a2e101983110/compressed_thumbnail_square_large.jpg?1472440610ng",
-  },
-  {
-    title: "優しい味わい！大根のそぼろ煮",
-    src:
-      "https://video.kurashiru.com/production/videos/7ba2b9a0-52d0-4f88-b19d-a2e101983110/compressed_thumbnail_square_large.jpg?1472440610ng",
-  },
-  {
-    title: "優しい味わい！大根のそぼろ煮",
-    src:
-      "https://video.kurashiru.com/production/videos/7ba2b9a0-52d0-4f88-b19d-a2e101983110/compressed_thumbnail_square_large.jpg?1472440610ng",
-  },
-];
+import RecipeCard from "../components/RecipeCard";
+import useRecipes from "../hooks/useRecipes";
 
 const chefs = [
   { src: "https://i.imgur.com/pYpqi1v.png" },
@@ -66,68 +31,46 @@ const chefs = [
   },
 ];
 
-const storageRef = storage.ref();
+const keywords = ["キャベツ", "豚肉", "なす", "キャベツ", "豚肉", "なす"];
+
 const antIcon = <LoadingOutlined style={{ fontSize: 36 }} spin />;
 
-export default function Home() {
-  const router = useRouter();
-  const [recipes, setRecipes] = useState([])
-  const [loading, setLoading] = useState(true)
-
-  const handleRecipeClick = (e, i) => {
-    router.push(`/recipes/${i}`);
-  };
-
-  useEffect(() => {
-    async function getData() {
-      const ref = database.collection('recipes').orderBy('title').limit(6)
-      const docs = await ref.get()
-      docs.forEach(async(doc) => {
-        let image_url = await storageRef.child(`recipes/${doc.data().image}`).getDownloadURL()
-        let recipe = {
-          title: doc.data().title,
-          id: doc.id,
-          src: image_url
-        }
-        setRecipes(recipes => [...recipes, recipe])
-      });
-      setLoading(false)
-    }
-    
-    getData()
-  }, [])
-
+const Banner = () => {
   return (
-    loading ? <div style={{ textAlign: 'center' }} className="container" ><Spin spinning={true} indicator={antIcon}></Spin></div> :
+    <div
+      style={{
+        textAlign: "center",
+        minHeight: 300,
+        background: "#fdf2ca repeat 0 0 url(/images/homepage.jpeg)",
+        marginBottom: 30,
+      }}
+    >
+      <h1 style={{ fontSize: 60, paddingTop: 50 }}>Food Guide</h1>
+      <h3>献立、簡単レシピに動画も！</h3>
+      <h3>必ず見つかるレシピサイト</h3>
+    </div>
+  );
+};
+
+export default function Home() {
+  const { recipes, loading } = useRecipes(6);
+
+  return loading ? (
+    <div style={{ textAlign: "center" }} className="container">
+      <Spin spinning={true} indicator={antIcon}></Spin>
+    </div>
+  ) : (
     <div className="container container-lg">
       <Row>
         <Col style={{ padding: 15 }} xs={24} md={18}>
-          <div
-            style={{
-              textAlign: "center",
-              minHeight: 300,
-              background: "#fdf2ca repeat 0 0 url(/images/homepage.jpeg)",
-              marginBottom: 30,
-            }}
-          >
-            <h1 style={{ fontSize: 60, paddingTop: 50 }}>Food Guide</h1>
-            <h3>献立、簡単レシピに動画も！</h3>
-            <h3>必ず見つかるレシピサイト</h3>
-          </div>
+          <Banner />
           <Divider orientation="left">
             <h2>今日のオススメ</h2>
           </Divider>
           <Row gutter={16}>
             {recipes.map((item, index) => (
               <Col key={index} span={8}>
-                <Card
-                  style={{ marginBottom: 16 }}
-                  hoverable
-                  cover={<img alt="example" src={item.src} />}
-                  onClick={(e) => handleRecipeClick(e, item.id)}
-                >
-                  <Card.Meta title={item.title} />
-                </Card>
+                <RecipeCard data={item} />
               </Col>
             ))}
           </Row>
@@ -135,16 +78,10 @@ export default function Home() {
         <Col style={{ padding: 16 }} xs={24} md={6}>
           <div style={{ marginBottom: 15 }}>
             <h2>定番のキーワード</h2>
-            <Tag style={{ marginBottom: 7 }}>キャベツ</Tag>
-            <Tag style={{ marginBottom: 7 }}>豚肉</Tag>
-            <Tag style={{ marginBottom: 7 }}>なす</Tag>
-            <Tag style={{ marginBottom: 7 }}>鶏肉</Tag>
-            <Tag style={{ marginBottom: 7 }}>キャベツ</Tag>
-            <Tag style={{ marginBottom: 7 }}>豚肉</Tag>
-            <Tag style={{ marginBottom: 7 }}>なす</Tag>
-            <Tag style={{ marginBottom: 7 }}>鶏肉</Tag>
+            {keywords.map((keyword, index) => (
+              <Tag key={index} style={{ marginBottom: 7 }}>{keyword}</Tag>
+            ))}
           </div>
-
           <div style={{ marginBottom: 15 }}>
             <h2>最高のシェフ</h2>
             <Row gutter={8}>

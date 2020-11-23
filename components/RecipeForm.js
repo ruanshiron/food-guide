@@ -1,14 +1,24 @@
-import { Form, Input, Button, Select, Upload, Spin, Row, Col, message } from "antd";
+import {
+  Form,
+  Input,
+  Button,
+  Select,
+  Upload,
+  Spin,
+  Row,
+  Col,
+  message,
+} from "antd";
 import {
   UploadOutlined,
   InboxOutlined,
   MinusCircleOutlined,
   PlusOutlined,
-  LoadingOutlined
+  LoadingOutlined,
 } from "@ant-design/icons";
 import { SaveOutlined } from "@ant-design/icons";
 import TextArea from "antd/lib/input/TextArea";
-import { storage } from "../config/firebaseConfig"
+import { storage } from "../config/firebaseConfig";
 import { useState } from "react";
 
 const { Option } = Select;
@@ -47,80 +57,92 @@ const antIcon = <LoadingOutlined style={{ fontSize: 36 }} spin />;
 
 const RecipeForm = ({ onSubmitForm }) => {
   const [form] = Form.useForm();
-  const [image, setImage] = useState()
-  const [putImageRef, setPutImageRef] = useState()
-  const [video, setVideo] = useState()
-  const [putVideoRef, setPutVideoRef] = useState()
-  const [loading, setLoading] = useState(false)
+  const [image, setImage] = useState();
+  const [putImageRef, setPutImageRef] = useState();
+  const [video, setVideo] = useState();
+  const [putVideoRef, setPutVideoRef] = useState();
+  const [loading, setLoading] = useState(false);
 
   const onGenderChange = (value) => {
     switch (value) {
       case "野菜":
-        form.setFieldsValue({ note: "Hi, man!" });
+        form.setFieldsValue({ note: "vegetable" });
         return;
       case "肉":
-        form.setFieldsValue({ note: "Hi, lady!" });
+        form.setFieldsValue({ note: "meat" });
         return;
       case "チーズ":
-        form.setFieldsValue({ note: "Hi there!" });
+        form.setFieldsValue({ note: "cheese" });
         return;
     }
   };
 
-  const customUploadImage = async({ onError, onSuccess, file }) => {
+  const customUploadImage = async ({ onError, onSuccess, file }) => {
     const storageRef = await storage.ref();
-    const fileExt = file.type.split('/').pop()
+    const fileExt = file.type.split("/").pop();
     const imgFile = storageRef.child(`recipes/${file.uid}.${fileExt}`);
     try {
       onSuccess(null, imgFile);
-      setPutImageRef(imgFile)
-    } catch(e) {
+      setPutImageRef(imgFile);
+    } catch (e) {
       onError(e);
     }
   };
 
   const beforeUploadImage = (image) => {
-    setImage(image)
-  }
+    setImage(image);
+  };
 
-
-  const customUploadVideo = async({ onError, onSuccess, file }) => {
+  const customUploadVideo = async ({ onError, onSuccess, file }) => {
     const storageRef = await storage.ref();
-    const fileExt = file.type.split('/').pop()
+    const fileExt = file.type.split("/").pop();
     const videoFile = storageRef.child(`recipes/${file.uid}.${fileExt}`);
     try {
       onSuccess(null, videoFile);
-      setPutVideoRef(videoFile)
-    } catch(e) {
+      setPutVideoRef(videoFile);
+    } catch (e) {
       onError(e);
     }
   };
 
   const beforeUploadVideo = (video) => {
-    setVideo(video)
-  }
+    setVideo(video);
+  };
 
-  const onFinish = async(values) => {
-    setLoading(true)
+  const onFinish = async (values) => {
+    setLoading(true);
     await putImageRef.put(image);
     await putVideoRef.put(video);
 
-    values.image = values.image[0].uid + '.' + values.image[0].type.split('/').pop()
-    values.video = values.video[0].uid + '.' + values.video[0].type.split('/').pop()
+    values.image =
+      values.image[0].uid + "." + values.image[0].type.split("/").pop();
+    values.video =
+      values.video[0].uid + "." + values.video[0].type.split("/").pop();
     onSubmitForm(values);
-    
-    setLoading(false)
-  }
 
-  return (
-    loading ? <div style={{ textAlign: 'center' }} className="container" ><Spin tip={'Uploading...'} indicator={antIcon}></Spin></div> :
+    setLoading(false);
+  };
+
+  return loading ? (
+    <div style={{ textAlign: "center" }} className="container">
+      <Spin tip={"Uploading..."} indicator={antIcon}></Spin>
+    </div>
+  ) : (
     <>
       <Form {...layout} form={form} name="control-hooks" onFinish={onFinish}>
-        <Form.Item name="title" label="料理名" rules={[{ required: true, message: 'Please input title' }]}>
+        <Form.Item
+          name="title"
+          label="料理名"
+          rules={[{ required: true, message: "Please input title" }]}
+        >
           <Input />
         </Form.Item>
 
-        <Form.Item name="category" label="カテゴリ" rules={[{ required: true, message: 'Please input category' }]}>
+        <Form.Item
+          name="category"
+          label="カテゴリ"
+          rules={[{ required: true, message: "Please input category" }]}
+        >
           <Select
             placeholder="カテゴリを選択"
             onChange={onGenderChange}
@@ -132,7 +154,11 @@ const RecipeForm = ({ onSubmitForm }) => {
           </Select>
         </Form.Item>
 
-        <Form.Item name="description" label="説明"  rules={[{ required: true, message: 'Please input description' }]}>
+        <Form.Item
+          name="description"
+          label="説明"
+          rules={[{ required: true, message: "Please input description" }]}
+        >
           <Input.TextArea />
         </Form.Item>
 
@@ -141,9 +167,13 @@ const RecipeForm = ({ onSubmitForm }) => {
           label="写真"
           valuePropName="fileList"
           getValueFromEvent={normFile}
-          rules={[{ required: true, message: 'Please input image' }]}
+          rules={[{ required: true, message: "Please input image" }]}
         >
-          <Upload beforeUpload={beforeUploadImage} listType="picture" customRequest={customUploadImage} >
+          <Upload
+            beforeUpload={beforeUploadImage}
+            listType="picture"
+            customRequest={customUploadImage}
+          >
             <Button icon={<UploadOutlined />}>写真をアップロード</Button>
           </Upload>
         </Form.Item>
@@ -154,9 +184,12 @@ const RecipeForm = ({ onSubmitForm }) => {
             valuePropName="fileList"
             getValueFromEvent={normFile}
             noStyle
-            rules={[{ required: true, message: 'Please input video' }]}
+            rules={[{ required: true, message: "Please input video" }]}
           >
-            <Upload.Dragger beforeUpload={beforeUploadVideo} customRequest={customUploadVideo} >
+            <Upload.Dragger
+              beforeUpload={beforeUploadVideo}
+              customRequest={customUploadVideo}
+            >
               <p className="ant-upload-drag-icon">
                 <InboxOutlined />
               </p>
@@ -183,9 +216,9 @@ const RecipeForm = ({ onSubmitForm }) => {
                       {...field}
                       validateTrigger={["onChange", "onBlur"]}
                       noStyle
-                      name={[field.name, 'name']}
-                      key={[field.name, 'name']}
-                      rules={[{ required: true, message: 'Please input name' }]}
+                      name={[field.name, "name"]}
+                      key={[field.name, "name"]}
+                      rules={[{ required: true, message: "Please input name" }]}
                     >
                       <Col>
                         <Input placeholder="マンゴ" />
@@ -195,9 +228,11 @@ const RecipeForm = ({ onSubmitForm }) => {
                       {...field}
                       validateTrigger={["onChange", "onBlur"]}
                       noStyle
-                      name={[field.name, 'quantity']}
-                      key={[field.name, 'quantity']}
-                      rules={[{ required: true, message: 'Please input quantity' }]}
+                      name={[field.name, "quantity"]}
+                      key={[field.name, "quantity"]}
+                      rules={[
+                        { required: true, message: "Please input quantity" },
+                      ]}
                     >
                       <Col>
                         <Input placeholder="20gram" />
@@ -241,7 +276,7 @@ const RecipeForm = ({ onSubmitForm }) => {
                     {...field}
                     validateTrigger={["onChange", "onBlur"]}
                     noStyle
-                    rules={[{ required: true, message: 'Please input steps' }]}
+                    rules={[{ required: true, message: "Please input steps" }]}
                   >
                     <TextArea
                       placeholder="材料を入力"
@@ -268,12 +303,21 @@ const RecipeForm = ({ onSubmitForm }) => {
           )}
         </Form.List>
 
-        <Form.Item name="point" label="ポイント" rules={[{ required: true, message: 'Please input point' }]}>
+        <Form.Item
+          name="point"
+          label="ポイント"
+          rules={[{ required: true, message: "Please input point" }]}
+        >
           <Input.TextArea />
         </Form.Item>
 
         <div style={{ textAlign: "center" }}>
-          <Button type="primary" htmlType="submit" size="large" icon={<SaveOutlined />}>
+          <Button
+            type="primary"
+            htmlType="submit"
+            size="large"
+            icon={<SaveOutlined />}
+          >
             セーブ
           </Button>
         </div>
