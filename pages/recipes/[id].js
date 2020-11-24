@@ -147,7 +147,7 @@ export default function Recipe() {
           <h1>コメント</h1>
         </Divider>
         <Typography>
-          <Comment />
+          <Comment recipeID={router.query.id} />
         </Typography>
       </div>
     </div>
