@@ -17,7 +17,10 @@ const openNotification = () => {
 
 const onSubmitForm = async (data) => {
   let res = await database.collection("recipes").add(data);
-  let { objectID } = await searchIndex.saveObject({ objectID: res.id, data });
+  let { objectID } = await searchIndex.saveObject({
+    objectID: res.id,
+    ...data,
+  });
   // console.log(objectID);
   console.log(objectID);
   openNotification();

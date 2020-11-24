@@ -53,7 +53,7 @@ const Banner = () => {
 };
 
 export default function Home() {
-  const { recipes, loading } = useRecipes(6);
+  const { recipes, loading } = useRecipes();
 
   return loading ? (
     <div style={{ textAlign: "center" }} className="container">
