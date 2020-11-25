@@ -1,7 +1,6 @@
-import { Typography, List, Space, Button } from "antd";
-import React, { useEffect } from "react";
-import { MessageOutlined, LikeOutlined, StarOutlined } from "@ant-design/icons";
-import Head from "next/head";
+import { List, Space, Button } from "antd";
+import React from "react";
+import { MessageOutlined, StarOutlined } from "@ant-design/icons";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import useRecipes from "../../hooks/useRecipes";
@@ -41,7 +40,7 @@ export default function Recipes() {
   const { q } = router.query;
   const { t } = useTranslation()
 
-  const { recipes, loading, more } = useRecipes(12);
+  const { recipes, loading, more } = useRecipes("search", 10, q);
 
   const loadMore = (
     <div

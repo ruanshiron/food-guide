@@ -55,7 +55,7 @@ const Banner = () => {
 };
 
 export default function Home() {
-  const { recipes, loading } = useRecipes(6);
+  const { recipes, loading } = useRecipes();
   const { t } = useTranslation()
 
   return loading ? (

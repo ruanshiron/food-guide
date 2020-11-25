@@ -13,6 +13,7 @@
     "@fortawesome/free-regular-svg-icons": "^5.15.1",
     "@fortawesome/free-solid-svg-icons": "^5.15.1",
     "@fortawesome/react-fontawesome": "^0.1.12",
+    "algoliasearch": "^4.8.0",
     "antd": "^4.8.2",
     "firebase": "^8.1.0",
     "i18next": "^19.8.4",

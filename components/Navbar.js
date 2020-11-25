@@ -32,7 +32,7 @@ const Navbar = () => {
   };
 
   const handleSearch = (e) => {
-    router.push("/recipes?q=keyword");
+    router.push(`/recipes?q=${e}`);
   };
 
   const [locale, setLocale] = useContext(LanguageContext);
