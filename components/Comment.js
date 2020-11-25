@@ -2,12 +2,14 @@ import { Card, Avatar, Input, Button } from "antd";
 import { SendOutlined } from "@ant-design/icons";
 import { useState, useEffect } from "react";
 import { storage, database } from "../config/firebaseConfig";
+import useTranslation from "../intl/useTranslation"
 
 const { Meta } = Card;
 
 const Comment = ({ recipeID }) => {
   const [comment, setComment] = useState("");
   const [allComment, setAllComment] = useState([]);
+  const { t } = useTranslation()
 
   useEffect(() => {
     async function getData() {
@@ -70,7 +72,7 @@ const Comment = ({ recipeID }) => {
           size={"large"}
           onClick={handleSendComment}
         >
-          コメント
+          {t("コメント")}
         </Button>
       </div>
     </>

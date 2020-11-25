@@ -6,6 +6,9 @@ import Search from "antd/lib/input/Search";
 import { useState } from "react";
 import RecipeForm from "./RecipeForm";
 import { useRouter } from "next/router";
+import { useContext } from "react";
+import { LanguageContext, locales } from "../components/Main";
+import useTranslation from "../intl/useTranslation"
 
 const Navbar = () => {
   const [visible, setVisible] = useState(false);
@@ -32,6 +35,17 @@ const Navbar = () => {
     router.push(`/recipes?q=${e}`);
   };
 
+  const [locale, setLocale] = useContext(LanguageContext);
+
+  function handleLocaleChange(language) {
+    const regex = new RegExp(`^/(${locales.join("|")})`);
+    setLocale(language);
+
+    router.push(router.pathname, router.asPath.replace(regex, `/${language}`));
+  }
+
+  const { t } = useTranslation()
+
   return (
     <>
       <Header>
@@ -42,7 +56,7 @@ const Navbar = () => {
                 <Link href="/">Food Guide</Link>
               </Menu.Item>
               <Menu.Item key="app">
-                <Link href="/recipes">レシピをよむ</Link>
+                <Link href="/recipes">{t("レシピをよむ")}</Link>
               </Menu.Item>
             </Menu>
           </Col>
@@ -69,7 +83,7 @@ const Navbar = () => {
               alignItems: "center",
             }}
             span={8}
-            sm={6}
+            sm={4}
           >
             {router.pathname != "/recipes/create" && (
               <Dropdown
@@ -85,10 +99,24 @@ const Navbar = () => {
                 arrow
               >
                 <Button size="large" style={{ marginRight: 8 }} type="primary">
-                  レシピを作る
+                  {t("レシピを作る")}
                 </Button>
               </Dropdown>
             )}
+          </Col>
+          <Col
+            style={{
+              display: "flex",
+              justifyContent: "flex-end",
+              alignItems: "center",
+            }}
+            span={8}
+            sm={2}
+          >
+            <div>
+              <Button size="medium" onClick={() => handleLocaleChange("jp")}>JP</Button>
+              <Button size="medium" onClick={() => handleLocaleChange("vi")}>VI</Button>
+            </div>
           </Col>
         </Row>
       </Header>

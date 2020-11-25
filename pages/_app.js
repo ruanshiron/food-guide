@@ -5,10 +5,10 @@ import { fas } from '@fortawesome/free-solid-svg-icons'
 
 library.add(fas)
 
-function App({ Component, pageProps }) {
+function App({ Component, pageProps, router}) {
   return (
     <Main>
-      <Component {...pageProps} />
+      <Component {...pageProps} key={router.route} /> 
     </Main>
   )
 }

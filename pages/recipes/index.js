@@ -4,6 +4,7 @@ import { MessageOutlined, StarOutlined } from "@ant-design/icons";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import useRecipes from "../../hooks/useRecipes";
+import useTranslation from "../../intl/useTranslation"
 
 const IconText = ({ icon, text }) => (
   <Space>
@@ -37,6 +38,7 @@ const RecipeItem = ({ data }) => {
 export default function Recipes() {
   const router = useRouter();
   const { q } = router.query;
+  const { t } = useTranslation()
 
   const { recipes, loading, more } = useRecipes("search", 10, q);
 
@@ -49,7 +51,7 @@ export default function Recipes() {
         lineHeight: "32px",
       }}
     >
-      <Button onClick={more}>もっと</Button>
+      <Button onClick={more}>{t("もっと")}</Button>
     </div>
   );
 

@@ -5,6 +5,7 @@ import Comment from "../../components/Comment";
 import Item from "antd/lib/list/Item";
 import { storage, database } from "../../config/firebaseConfig";
 import { useState, useEffect } from "react";
+import useTranslation from "../../intl/useTranslation"
 import useRatings from "../../hooks/useRatings";
 import Rating from "../../components/Rating";
 
@@ -15,6 +16,7 @@ const antIcon = <LoadingOutlined style={{ fontSize: 36 }} spin />;
 
 export default function Recipe() {
   const router = useRouter();
+  const { t } = useTranslation()
   const [recipe, setRecipe] = useState({});
   const [loading, setLoading] = useState(true);
   const { id } = router.query;
@@ -66,7 +68,9 @@ export default function Recipe() {
 
       <div style={{ paddingBottom: "30px" }}>
         <Divider orientation="left">
-          <h1>材料</h1>
+          <h1>
+          {t("材料")}
+          </h1>
         </Divider>
         <List
           dataSource={recipe.ingredients}
@@ -81,7 +85,7 @@ export default function Recipe() {
 
       <div style={{ paddingBottom: "30px" }}>
         <Divider orientation="left">
-          <h1>作り方</h1>
+          <h1>{t("作り方")}</h1>
         </Divider>
         <List
           dataSource={recipe.steps}
@@ -98,7 +102,7 @@ export default function Recipe() {
 
       <div style={{ paddingBottom: "30px" }}>
         <Divider orientation="left">
-          <h1>料理のコツ・ポイント</h1>
+          <h1>{t("tips")}</h1>
         </Divider>
         <Typography>
           <Paragraph>{recipe.point}</Paragraph>
@@ -107,7 +111,7 @@ export default function Recipe() {
 
       <div style={{ paddingBottom: "30px" }}>
         <Divider orientation="left">
-          <h1>評価</h1>
+          <h1>{t("評価")}</h1>
         </Divider>
 
         <Item style={{ paddingLeft: 50 }}>
@@ -117,7 +121,7 @@ export default function Recipe() {
 
       <div style={{ paddingBottom: "30px" }}>
         <Divider orientation="left">
-          <h1>コメント</h1>
+          <h1>{t("コメント")}</h1>
         </Divider>
         <Typography>
           <Comment recipeID={router.query.id} />
