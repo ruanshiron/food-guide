@@ -6,6 +6,7 @@ import Item from "antd/lib/list/Item";
 import { storage, database } from "../../config/firebaseConfig"
 import { useState, useEffect } from "react";
 const { Title, Paragraph, Text, Link } = Typography;
+import useTranslation from "../../intl/useTranslation"
 
 // const ingredients = [
 //   { name: "ingredient 1", quantity: "1" },
@@ -30,6 +31,7 @@ export default function Recipe() {
   const [loading, setLoading] = useState(true)
 
   const id = router.query.id;
+  const { t } = useTranslation()
 
   useEffect(() => {
     async function getData() {
@@ -92,7 +94,7 @@ export default function Recipe() {
       <div style={{ paddingBottom: "30px" }}>
         <Divider orientation="left">
           <h1>
-            材料
+          {t("材料")}
           </h1>
         </Divider>
         <List
@@ -108,7 +110,7 @@ export default function Recipe() {
 
       <div style={{ paddingBottom: "30px" }}>
         <Divider orientation="left">
-          <h1>作り方</h1>
+          <h1>{t("作り方")}</h1>
         </Divider>
         <List
           dataSource={recipe.steps}
@@ -125,7 +127,7 @@ export default function Recipe() {
 
       <div style={{ paddingBottom: "30px" }}>
         <Divider orientation="left">
-          <h1>料理のコツ・ポイント</h1>
+          <h1>{t("tips")}</h1>
         </Divider>
         <Typography>
           <Paragraph>
@@ -136,7 +138,7 @@ export default function Recipe() {
 
       <div style={{ paddingBottom: "30px" }}>
         <Divider orientation="left">
-          <h1>評価</h1>
+          <h1>{t("評価")}</h1>
         </Divider>
   
         <Item style={{ paddingLeft: 50 }}><Rate /><Button　type="primary"　shape="round">送信</Button></Item>
@@ -144,7 +146,7 @@ export default function Recipe() {
 
       <div style={{ paddingBottom: "30px" }}>
         <Divider orientation="left">
-          <h1>コメント</h1>
+          <h1>{t("コメント")}</h1>
         </Divider>
         <Typography>
           <Comment />

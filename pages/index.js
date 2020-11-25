@@ -2,6 +2,7 @@ import { Divider, Row, Col, Tag, Spin } from "antd";
 import { LoadingOutlined } from "@ant-design/icons";
 import RecipeCard from "../components/RecipeCard";
 import useRecipes from "../hooks/useRecipes";
+import useTranslation from "../intl/useTranslation"
 
 const chefs = [
   { src: "https://i.imgur.com/pYpqi1v.png" },
@@ -36,6 +37,7 @@ const keywords = ["キャベツ", "豚肉", "なす", "キャベツ", "豚肉", 
 const antIcon = <LoadingOutlined style={{ fontSize: 36 }} spin />;
 
 const Banner = () => {
+  const { t } = useTranslation()
   return (
     <div
       style={{
@@ -46,14 +48,15 @@ const Banner = () => {
       }}
     >
       <h1 style={{ fontSize: 60, paddingTop: 50 }}>Food Guide</h1>
-      <h3>献立、簡単レシピに動画も！</h3>
-      <h3>必ず見つかるレシピサイト</h3>
+      <h3>{t("slogan1")}</h3>
+      <h3>{t("slogan2")}</h3>
     </div>
   );
 };
 
 export default function Home() {
   const { recipes, loading } = useRecipes(6);
+  const { t } = useTranslation()
 
   return loading ? (
     <div style={{ textAlign: "center" }} className="container">
@@ -65,7 +68,7 @@ export default function Home() {
         <Col style={{ padding: 15 }} xs={24} md={18}>
           <Banner />
           <Divider orientation="left">
-            <h2>今日のオススメ</h2>
+            <h2>{t("今日のオススメ")}</h2>
           </Divider>
           <Row gutter={16}>
             {recipes.map((item, index) => (
@@ -77,13 +80,13 @@ export default function Home() {
         </Col>
         <Col style={{ padding: 16 }} xs={24} md={6}>
           <div style={{ marginBottom: 15 }}>
-            <h2>定番のキーワード</h2>
+            <h2>{t("定番のキーワード")}</h2>
             {keywords.map((keyword, index) => (
               <Tag key={index} style={{ marginBottom: 7 }}>{keyword}</Tag>
             ))}
           </div>
           <div style={{ marginBottom: 15 }}>
-            <h2>最高のシェフ</h2>
+            <h2>{t("最高のシェフ")}</h2>
             <Row gutter={8}>
               {chefs.map((chef, index) => (
                 <Col key={index} style={{ marginBottom: 8 }} xs={8} md={12}>

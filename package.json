@@ -15,11 +15,20 @@
     "@fortawesome/react-fontawesome": "^0.1.12",
     "antd": "^4.8.2",
     "firebase": "^8.1.0",
+    "i18next": "^19.8.4",
+    "i18next-browser-languagedetector": "^6.0.1",
+    "i18next-http-backend": "^1.0.21",
     "install": "^0.13.0",
     "next": "10.0.1",
     "npm": "^6.14.8",
     "react": "17.0.1",
     "react-dom": "17.0.1",
+    "react-i18next": "^11.7.3",
     "sass": "^1.29.0"
+  },
+  "devDependencies": {
+    "@types/node": "^14.14.9",
+    "@types/react": "^17.0.0",
+    "typescript": "^4.1.2"
   }
 }

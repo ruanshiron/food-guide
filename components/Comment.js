@@ -1,9 +1,11 @@
 import { Card, Avatar, Input, Button } from "antd";
 import { SendOutlined } from "@ant-design/icons";
+import useTranslation from "../intl/useTranslation"
 
 const { Meta } = Card;
 
 const Comment = () => {
+  const { t } = useTranslation()
   return (
     <>
       <Card bordered={false}>
@@ -52,7 +54,7 @@ const Comment = () => {
           icon={<SendOutlined />}
           size={"large"}
         >
-          コメント
+          {t("コメント")}
         </Button>
       </div>
     </>
