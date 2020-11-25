@@ -1,10 +1,12 @@
-import { Button, Divider, List, Typography, Rate, Spin } from "antd";
+import { Button, Divider, List, Typography, Rate, Spin, Tooltip } from "antd";
 import { useRouter } from "next/router";
 import { LoadingOutlined } from "@ant-design/icons";
 import Comment from "../../components/Comment";
 import Item from "antd/lib/list/Item";
 import { storage, database } from "../../config/firebaseConfig";
 import { useState, useEffect } from "react";
+import useRatings from "../../hooks/useRatings";
+import Rating from "../../components/Rating";
 
 const { Title, Paragraph } = Typography;
 
@@ -16,6 +18,7 @@ export default function Recipe() {
   const [recipe, setRecipe] = useState({});
   const [loading, setLoading] = useState(true);
   const { id } = router.query;
+  const { ratings, average } = useRatings(id);
 
   async function getData() {
     const ref = database.collection("recipes").doc(id);
@@ -53,7 +56,11 @@ export default function Recipe() {
           <Paragraph>{recipe.description}</Paragraph>
         </Typography>
         <Item>
-          <Rate allowHalf defaultValue={3.5} disabled />
+          <Tooltip title={`${ratings.length} reviews`} placement="right">
+            <div>
+              <Rate allowHalf defaultValue={average} disabled />
+            </div>
+          </Tooltip>
         </Item>
       </div>
 
@@ -104,10 +111,7 @@ export default function Recipe() {
         </Divider>
 
         <Item style={{ paddingLeft: 50 }}>
-          <Rate />
-          <Button type="primary" shape="round">
-            送信
-          </Button>
+          <Rating recipeID={id} />
         </Item>
       </div>
 
