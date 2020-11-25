@@ -57,7 +57,7 @@ export default function Recipes() {
 
   return (
     <div className="container">
-      <h1>{q ? "検索の結果" : "レシピをよむ一覧"}</h1>
+      <h1>{q ? t("検索の結果") : t("レシピ一覧")}</h1>
       <List
         itemLayout="vertical"
         loading={loading}

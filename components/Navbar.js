@@ -8,7 +8,7 @@ import RecipeForm from "./RecipeForm";
 import { useRouter } from "next/router";
 import { useContext } from "react";
 import { LanguageContext, locales } from "../components/Main";
-import useTranslation from "../intl/useTranslation"
+import useTranslation from "../intl/useTranslation";
 
 const Navbar = () => {
   const [visible, setVisible] = useState(false);
@@ -44,7 +44,7 @@ const Navbar = () => {
     router.push(router.pathname, router.asPath.replace(regex, `/${language}`));
   }
 
-  const { t } = useTranslation()
+  const { t } = useTranslation();
 
   return (
     <>
@@ -56,7 +56,7 @@ const Navbar = () => {
                 <Link href="/">Food Guide</Link>
               </Menu.Item>
               <Menu.Item key="app">
-                <Link href="/recipes">{t("レシピをよむ")}</Link>
+                <Link href="/recipes">{t("レシピ一覧")}</Link>
               </Menu.Item>
             </Menu>
           </Col>
@@ -72,7 +72,7 @@ const Navbar = () => {
             <Search
               style={{ display: "block", margin: "auto" }}
               size="large"
-              placeholder="料理名・食材でレシピをさがす"
+              placeholder={t("料理名や食材でレシピをさがす")}
               onSearch={handleSearch}
             />
           </Col>
@@ -86,22 +86,16 @@ const Navbar = () => {
             sm={4}
           >
             {router.pathname != "/recipes/create" && (
-              <Dropdown
-                overlay={
-                  <Menu>
-                    <Menu.Item>
-                      <Link href="/recipes/create">Add By New Page</Link>
-                    </Menu.Item>
-                    <Menu.Item onClick={showModal}>Add By Popup</Menu.Item>
-                  </Menu>
-                }
-                placement="bottomRight"
-                arrow
-              >
-                <Button size="large" style={{ marginRight: 8 }} type="primary">
+              <Link href="/recipes/create">
+                <Button
+                  href="/recipes/create"
+                  size="large"
+                  style={{ marginRight: 8 }}
+                  type="primary"
+                >
                   {t("レシピを作る")}
                 </Button>
-              </Dropdown>
+              </Link>
             )}
           </Col>
           <Col
@@ -114,8 +108,12 @@ const Navbar = () => {
             sm={2}
           >
             <div>
-              <Button size="medium" onClick={() => handleLocaleChange("jp")}>JP</Button>
-              <Button size="medium" onClick={() => handleLocaleChange("vi")}>VI</Button>
+              <Button size="medium" onClick={() => handleLocaleChange("jp")}>
+                JP
+              </Button>
+              <Button size="medium" onClick={() => handleLocaleChange("vi")}>
+                VI
+              </Button>
             </div>
           </Col>
         </Row>

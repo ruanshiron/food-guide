@@ -4,6 +4,7 @@ import RecipeForm from "../../components/RecipeForm";
 import { CheckCircleTwoTone } from "@ant-design/icons";
 import { database } from "../../config/firebaseConfig";
 import searchIndex from "../../config/algoliaConfig";
+import useTranslation from "../../intl/useTranslation";
 
 const openNotification = () => {
   notification.open({
@@ -27,10 +28,12 @@ const onSubmitForm = async (data) => {
 };
 
 export default function create() {
+  const { t } = useTranslation()
+
   return (
     <div className="container">
       <Divider>
-        <h1>新しいレシピ</h1>
+        <h1>{t("新しいレシピ")}</h1>
       </Divider>
       <RecipeForm onSubmitForm={onSubmitForm} />
     </div>

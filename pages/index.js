@@ -32,7 +32,7 @@ const chefs = [
   },
 ];
 
-const keywords = ["キャベツ", "豚肉", "なす", "キャベツ", "豚肉", "なす"];
+const keywords = ["Sườn xào", "Thịt lợn", "Món rau", "Canh", "Bắp cải", "Tôm chiên"];
 
 const antIcon = <LoadingOutlined style={{ fontSize: 36 }} spin />;
 

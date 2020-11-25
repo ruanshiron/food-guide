@@ -20,6 +20,7 @@ import { SaveOutlined } from "@ant-design/icons";
 import TextArea from "antd/lib/input/TextArea";
 import { storage } from "../config/firebaseConfig";
 import { useState } from "react";
+import useTranslation from "../intl/useTranslation";
 
 const { Option } = Select;
 
@@ -62,16 +63,18 @@ const RecipeForm = ({ onSubmitForm }) => {
   const [video, setVideo] = useState();
   const [putVideoRef, setPutVideoRef] = useState();
   const [loading, setLoading] = useState(false);
+  const { t } = useTranslation()
+  
 
   const onGenderChange = (value) => {
     switch (value) {
-      case "野菜":
+      case "Rau":
         form.setFieldsValue({ note: "vegetable" });
         return;
-      case "肉":
+      case "Thịt":
         form.setFieldsValue({ note: "meat" });
         return;
-      case "チーズ":
+      case "Bánh":
         form.setFieldsValue({ note: "cheese" });
         return;
     }
@@ -132,59 +135,59 @@ const RecipeForm = ({ onSubmitForm }) => {
       <Form {...layout} form={form} name="control-hooks" onFinish={onFinish}>
         <Form.Item
           name="title"
-          label="料理名"
-          rules={[{ required: true, message: "Please input title" }]}
+          label={t("料理名")}
+          rules={[{ required: true, message: "Hãy nhập tên món ăn" }]}
         >
           <Input />
         </Form.Item>
 
         <Form.Item
           name="category"
-          label="カテゴリ"
-          rules={[{ required: true, message: "Please input category" }]}
+          label={t("カテゴリ")}
+          rules={[{ required: true, message: "Hãy nhập loại món" }]}
         >
           <Select
-            placeholder="カテゴリを選択"
+            placeholder={t("カテゴリを選択")}
             onChange={onGenderChange}
             allowClear
           >
-            <Option value="野菜">野菜</Option>
-            <Option value="肉">肉</Option>
-            <Option value="チーズ">チーズ</Option>
+            <Option value="Rau">Rau</Option>
+            <Option value="Thịt">Thịt</Option>
+            <Option value="Bánh">Bánh</Option>
           </Select>
         </Form.Item>
 
         <Form.Item
           name="description"
-          label="説明"
-          rules={[{ required: true, message: "Please input description" }]}
+          label={t("説明")}
+          rules={[{ required: true, message: "Hãy nhập mô tả" }]}
         >
           <Input.TextArea />
         </Form.Item>
 
         <Form.Item
           name="image"
-          label="写真"
+          label={t("写真")}
           valuePropName="fileList"
           getValueFromEvent={normFile}
-          rules={[{ required: true, message: "Please input image" }]}
+          rules={[{ required: true, message: "Hãy chèn thêm ảnh" }]}
         >
           <Upload
             beforeUpload={beforeUploadImage}
             listType="picture"
             customRequest={customUploadImage}
           >
-            <Button icon={<UploadOutlined />}>写真をアップロード</Button>
+            <Button icon={<UploadOutlined />}>{t("写真をアップロード")}</Button>
           </Upload>
         </Form.Item>
 
-        <Form.Item label="ビデオ">
+        <Form.Item label={t("ビデオ")}>
           <Form.Item
             name="video"
             valuePropName="fileList"
             getValueFromEvent={normFile}
             noStyle
-            rules={[{ required: true, message: "Please input video" }]}
+            rules={[{ required: true, message: "Hãy chèn thêm video" }]}
           >
             <Upload.Dragger
               beforeUpload={beforeUploadVideo}
@@ -194,7 +197,7 @@ const RecipeForm = ({ onSubmitForm }) => {
                 <InboxOutlined />
               </p>
               <p className="ant-upload-text">
-                クリックまたドロップしてアップロードする
+                {t("クリックまたドロップしてアップロードする")}
               </p>
             </Upload.Dragger>
           </Form.Item>
@@ -208,7 +211,7 @@ const RecipeForm = ({ onSubmitForm }) => {
                   {...(index === 0
                     ? formItemLayout
                     : formItemLayoutWithOutLabel)}
-                  label={index === 0 ? "材料" : ""}
+                  label={index === 0 ? t("材料") : ""}
                   key={field.key}
                 >
                   <Row gutter={8}>
@@ -218,10 +221,10 @@ const RecipeForm = ({ onSubmitForm }) => {
                       noStyle
                       name={[field.name, "name"]}
                       key={[field.name, "name"]}
-                      rules={[{ required: true, message: "Please input name" }]}
+                      rules={[{ required: true, message: "Hãy nhập tên" }]}
                     >
                       <Col>
-                        <Input placeholder="マンゴ" />
+                        <Input placeholder="Xoài" />
                       </Col>
                     </Form.Item>
                     <Form.Item
@@ -231,7 +234,7 @@ const RecipeForm = ({ onSubmitForm }) => {
                       name={[field.name, "quantity"]}
                       key={[field.name, "quantity"]}
                       rules={[
-                        { required: true, message: "Please input quantity" },
+                        { required: true, message: "Hãy nhập số lượng" },
                       ]}
                     >
                       <Col>
@@ -254,7 +257,7 @@ const RecipeForm = ({ onSubmitForm }) => {
                   style={{ width: "70%" }}
                   icon={<PlusOutlined />}
                 >
-                  材料を追加
+                  {t("材料を追加")}
                 </Button>
               </Form.Item>
             </>
@@ -269,17 +272,17 @@ const RecipeForm = ({ onSubmitForm }) => {
                   {...(index === 0
                     ? formItemLayout
                     : formItemLayoutWithOutLabel)}
-                  label={index === 0 ? "作り方" : ""}
+                  label={index === 0 ? t("作り方") : ""}
                   key={field.key}
                 >
                   <Form.Item
                     {...field}
                     validateTrigger={["onChange", "onBlur"]}
                     noStyle
-                    rules={[{ required: true, message: "Please input steps" }]}
+                    rules={[{ required: true, message: "Hãy thêm các bước" }]}
                   >
                     <TextArea
-                      placeholder="材料を入力"
+                      placeholder="Nhập các bước"
                       style={{ width: "80%" }}
                     />
                   </Form.Item>
@@ -296,7 +299,7 @@ const RecipeForm = ({ onSubmitForm }) => {
                   style={{ width: "70%" }}
                   icon={<PlusOutlined />}
                 >
-                  作り方を追加
+                  {t("作り方を追加")}
                 </Button>
               </Form.Item>
             </>
@@ -305,8 +308,8 @@ const RecipeForm = ({ onSubmitForm }) => {
 
         <Form.Item
           name="point"
-          label="ポイント"
-          rules={[{ required: true, message: "Please input point" }]}
+          label={t("ポイント")}
+          rules={[{ required: true, message: "Hãy thêm chú ý" }]}
         >
           <Input.TextArea />
         </Form.Item>
@@ -318,7 +321,7 @@ const RecipeForm = ({ onSubmitForm }) => {
             size="large"
             icon={<SaveOutlined />}
           >
-            セーブ
+            {t("セーブ")}
           </Button>
         </div>
       </Form>
