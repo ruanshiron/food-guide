@@ -4,12 +4,12 @@ import Navbar from "./Navbar";
 const { Footer, Content } = Layout;
 import { createContext, useState } from "react";
 
-export const defaultLocale = "jp";
+export const defaultLocale = "vi";
 export const locales = ["jp", "vi"];
 export const LanguageContext = createContext([]);
 
 const Main = ({ children }) => {
-  const [locale, setLocale] = useState("jp");
+  const [locale, setLocale] = useState(defaultLocale);
   return (
     <>
       <Head>
