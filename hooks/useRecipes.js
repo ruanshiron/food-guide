@@ -40,7 +40,7 @@ export default function useRecipes(option = "query", limited = 6, q = "") {
         .child(`recipes/${doc.image}`)
         .getDownloadURL();
       let recipe = {
-        id: doc.id,
+        id: doc.objectID,
         src: image_url,
         ...doc,
       };
