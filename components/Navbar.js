@@ -9,10 +9,14 @@ import { useRouter } from "next/router";
 import { useContext } from "react";
 import { LanguageContext, locales } from "../components/Main";
 import useTranslation from "../intl/useTranslation";
+import { useAuth } from "../utils/auth/AuthProvider";
+import { firebase } from "../config/firebaseConfig"
 
 const Navbar = () => {
   const [visible, setVisible] = useState(false);
   const router = useRouter();
+  const { user } = useAuth();
+
   const handleClick = (e) => {
     console.log("click ", e);
   };
@@ -35,6 +39,11 @@ const Navbar = () => {
     router.push(`/recipes?q=${e}`);
   };
 
+  const handleLogout = async () => {
+    await firebase.auth().signOut();
+    router.push(`/`);
+  }
+
   const [locale, setLocale] = useContext(LanguageContext);
 
   function handleLocaleChange(language) {
@@ -50,7 +59,7 @@ const Navbar = () => {
     <>
       <Header>
         <Row>
-          <Col span={4} sm={6}>
+          <Col span={4} sm={4}>
             <Menu onClick={handleClick} mode="horizontal">
               <Menu.Item key="mail">
                 <Link href="/">Food Guide</Link>
@@ -66,8 +75,8 @@ const Navbar = () => {
               justifyContent: "center",
               alignItems: "center",
             }}
-            span={12}
-            sm={12}
+            span={11}
+            sm={11}
           >
             <Search
               style={{ display: "block", margin: "auto" }}
@@ -76,35 +85,79 @@ const Navbar = () => {
               onSearch={handleSearch}
             />
           </Col>
+          {user ? (
+            <>
+              <Col
+                style={{
+                  display: "flex",
+                  justifyContent: "flex-end",
+                  alignItems: "center",
+                }}
+                span={2}
+                sm={2}
+              >
+                <Button>Tài khoản</Button>
+              </Col>
+              <Col
+                style={{
+                  display: "flex",
+                  justifyContent: "flex-end",
+                  alignItems: "center",
+                }}
+                span={3}
+                sm={3}
+              >
+                {router.pathname != "/recipes/create" && (
+                  <Link href="/recipes/create">
+                    <Button href="/recipes/create" size="large" type="primary">
+                      {t("レシピを作る")}
+                    </Button>
+                  </Link>
+                )}
+              </Col>
+              <Col
+                style={{
+                  display: "flex",
+                  justifyContent: "flex-end",
+                  alignItems: "center",
+                }}
+                span={2}
+                sm={2}
+              >
+                <Button onClick={handleLogout} type="danger">Đăng xuất</Button>
+              </Col>
+            </>
+          ) : (
+            <>
+              <Col
+                style={{
+                  display: "flex",
+                  justifyContent: "flex-end",
+                  alignItems: "center",
+                }}
+                span={7}
+                sm={7}
+              >
+                <Link href="/register">
+                  <Button type="primary">Đăng ký</Button>
+                </Link>
+
+                <Link href="/login">
+                  <Button type="primary" style={{ marginLeft: 15 }}>
+                    Đăng nhập
+                  </Button>
+                </Link>
+              </Col>
+            </>
+          )}
+
           <Col
             style={{
               display: "flex",
               justifyContent: "flex-end",
               alignItems: "center",
             }}
-            span={8}
-            sm={4}
-          >
-            {router.pathname != "/recipes/create" && (
-              <Link href="/recipes/create">
-                <Button
-                  href="/recipes/create"
-                  size="large"
-                  style={{ marginRight: 8 }}
-                  type="primary"
-                >
-                  {t("レシピを作る")}
-                </Button>
-              </Link>
-            )}
-          </Col>
-          <Col
-            style={{
-              display: "flex",
-              justifyContent: "flex-end",
-              alignItems: "center",
-            }}
-            span={8}
+            span={2}
             sm={2}
           >
             <div>
