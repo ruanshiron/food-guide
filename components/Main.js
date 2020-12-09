@@ -3,6 +3,7 @@ import Head from "next/head";
 import Navbar from "./Navbar";
 const { Footer, Content } = Layout;
 import { createContext, useState } from "react";
+import MyFooter from "./Footer";
 
 export const defaultLocale = "vi";
 export const locales = ["jp", "vi"];
@@ -12,19 +13,17 @@ const Main = ({ children }) => {
   const [locale, setLocale] = useState(defaultLocale);
   return (
     <>
-      <Head>
-        <title>Food Guide</title>
-        <link rel="icon" href="/favicon.ico" />
-      </Head>
-      <Layout>
-        <LanguageContext.Provider value={[locale, setLocale]}>
+      <LanguageContext.Provider value={[locale, setLocale]}>
+        <Head>
+          <title>Food Guide</title>
+          <link rel="icon" href="/favicon.ico" />
+        </Head>
+        <Layout>
           <Navbar />
           <Content>{children}</Content>
-          <Footer style={{ textAlign: "center" }}>
-            Food Guide develop by AmongUsss
-          </Footer>
-        </LanguageContext.Provider>
-      </Layout>
+          <MyFooter />
+        </Layout>
+      </LanguageContext.Provider>
     </>
   );
 };
