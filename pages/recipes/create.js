@@ -1,10 +1,11 @@
-import { Button, Divider, notification } from "antd";
+import { Button, Divider, message, notification } from "antd";
 import React from "react";
 import RecipeForm from "../../components/RecipeForm";
 import { CheckCircleTwoTone } from "@ant-design/icons";
 import { database } from "../../config/firebaseConfig";
 import searchIndex from "../../config/algoliaConfig";
 import useTranslation from "../../intl/useTranslation";
+import { useRouter } from "next/router";
 
 const openNotification = () => {
   notification.open({
@@ -16,19 +17,26 @@ const openNotification = () => {
   });
 };
 
-const onSubmitForm = async (data) => {
-  let res = await database.collection("recipes").add(data);
-  let { objectID } = await searchIndex.saveObject({
-    objectID: res.id,
-    ...data,
-  });
-  // console.log(objectID);
-  console.log(objectID);
-  openNotification();
-};
-
 export default function create() {
-  const { t } = useTranslation()
+  const { t } = useTranslation();
+  const router = useRouter();
+
+  const onSubmitForm = async (data) => {
+    try {
+      let res = await database.collection("recipes").add(data);
+      let { objectID } = await searchIndex.saveObject({
+        objectID: res.id,
+        ...data,
+      });
+      // console.log(objectID);
+      console.log(objectID);
+      openNotification();
+      window.scrollTo(0, 0);
+      router.push(`/recipes/${objectID}`);
+    } catch (error) {
+      message.error(error);
+    }
+  };
 
   return (
     <div className="container">

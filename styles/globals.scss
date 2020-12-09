@@ -5,14 +5,14 @@
 }
 
 .ant-layout-header {
-  border-bottom: solid #D9D9D9 1px;
+  border-bottom: solid #d9d9d9 1px;
   background-color: #fff;
   height: 66px;
   padding: 0px 50px;
 }
 
 .ant-menu-horizontal {
-  border: none
+  border: none;
 }
 
 @media only screen and (max-width: 576px) {
@@ -30,7 +30,7 @@
   margin-top: 30px;
   margin-bottom: 30px;
   max-width: 750px;
-  min-height: 100vh;
+  min-height: calc(100vh - 66px);
 }
 
 .container-lg {
@@ -77,4 +77,41 @@
 .dynamic-delete-button[disabled] {
   cursor: not-allowed;
   opacity: 0.5;
+}
+
+.outer {
+  display: table;
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 100%;
+}
+
+.middle {
+  display: table-cell;
+  vertical-align: middle;
+}
+
+
+.login-form {
+  max-width: 300px;
+  margin: auto;
+}
+.login-form-forgot {
+  float: right;
+}
+.ant-col-rtl .login-form-forgot {
+  float: left;
+}
+
+.ant-col-rtl .signup-form-button {
+  float: left;
+}
+.login-form-button {
+  width: 100%;
+}
+
+.signup-form-button {
+  width: 100%;
 }

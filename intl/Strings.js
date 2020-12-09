@@ -71,6 +71,14 @@ export const LangStrings = {
     料理名や食材でレシピをさがす: "Tìm kiếm công thức theo tên hoặc nguyên liệu",
     検索の結果: "Kết quả tìm kiếm",
     セーブ: "Lưu",
-    login: "Đăng nhập"
+    login: "Đăng nhập",
+    signup: "Đăng ký",
+    logout: "Đăng xuất",
+    profile: "Tài khoản",
+    login_error: "Không thể đăng nhập, kiểm tra lại thông tin tài khoản và mật khẩu",
+    signup_error: "Không thể đăng ký, email này đã tồn tại",
+    signup_successfully: "Đăng ký thành công, chuyển về trang chủ",
+    password_validations_error: "Kiểm tra lại mật khẩu đã nhập",
+    logged_in_message: "Bạn đã đăng nhập..."
   },
 };
