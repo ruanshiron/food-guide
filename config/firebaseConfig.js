@@ -15,7 +15,7 @@ const config = {
 
 try {
   firebase.initializeApp(config)
-  //firebase.auth().setPersistence(firebase.auth.Auth.Persistence.SESSION);
+  firebase.auth().setPersistence(firebase.auth.Auth.Persistence.LOCAL);
 } catch (err) {
   if (!/already exists/.test(err.message)) {
     console.error('Firebase initialization error', err.stack)

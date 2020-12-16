@@ -35,9 +35,12 @@ const Navbar = () => {
       <Menu.Item>
         <Link href="/recipes/create">{t("レシピを作る")}</Link>
       </Menu.Item>
-      <Menu.Item>
-        <Link href="/">{t("profile")}</Link>
-      </Menu.Item>
+      {user && (
+        <Menu.Item>
+          <Link href={`/users/${user.uid}`}>{t("profile")}</Link>
+        </Menu.Item>
+      )}
+
       <Menu.Item danger onClick={handleLogout}>
         {t("logout")}
       </Menu.Item>
