@@ -1,11 +1,11 @@
 import { Button, Divider, List, Typography, Rate, Spin, Tooltip } from "antd";
 import { useRouter } from "next/router";
-import { LoadingOutlined } from "@ant-design/icons";
+import { LoadingOutlined, HeartOutlined } from "@ant-design/icons";
 import Comment from "../../components/Comment";
 import Item from "antd/lib/list/Item";
 import { storage, database } from "../../config/firebaseConfig";
 import { useState, useEffect } from "react";
-import useTranslation from "../../intl/useTranslation"
+import useTranslation from "../../intl/useTranslation";
 import useRatings from "../../hooks/useRatings";
 import Rating from "../../components/Rating";
 
@@ -16,7 +16,7 @@ const antIcon = <LoadingOutlined style={{ fontSize: 36 }} spin />;
 
 export default function Recipe() {
   const router = useRouter();
-  const { t } = useTranslation()
+  const { t } = useTranslation();
   const [recipe, setRecipe] = useState({});
   const [loading, setLoading] = useState(true);
   const { id } = router.query;
@@ -53,8 +53,14 @@ export default function Recipe() {
           <source src={recipe.video} type="video/mp4" />
         </video>
 
-        <Typography>
+        <Typography style={{ position: "relative" }}>
           <Title>{recipe.title}</Title>
+          <Button
+            style={{ position: "absolute", right: 10, top: 0 }}
+            type="text"
+            shape="circle"
+            icon={<HeartOutlined style={{ fontSize: 30 }} />}
+          />
           <Paragraph>{recipe.description}</Paragraph>
         </Typography>
         <Item>
@@ -68,9 +74,7 @@ export default function Recipe() {
 
       <div style={{ paddingBottom: "30px" }}>
         <Divider orientation="left">
-          <h1>
-          {t("材料")}
-          </h1>
+          <h1>{t("材料")}</h1>
         </Divider>
         <List
           dataSource={recipe.ingredients}

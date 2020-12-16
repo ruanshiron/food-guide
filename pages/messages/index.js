@@ -6,7 +6,7 @@ export default function Messages() {
   return (
     <>
       <Navbar
-        center={<div>MESSAGES</div>}
+        center={<div>Tin nhắn</div>}
       />
       <Row>
         <Col md={6}>

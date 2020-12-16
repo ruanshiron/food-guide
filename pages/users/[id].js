@@ -12,6 +12,7 @@ import {
   Tabs,
   Form,
   Input,
+  Tag,
 } from "antd";
 import { useRouter } from "next/router";
 import {
@@ -19,6 +20,7 @@ import {
   UserOutlined,
   HeartOutlined,
   HeartFilled,
+  StarFilled,
 } from "@ant-design/icons";
 import { storage, database } from "../../config/firebaseConfig";
 import { useState, useEffect } from "react";
@@ -89,9 +91,13 @@ export default function Recipe() {
           <Avatar size={200} icon={<UserOutlined />} />
           {isEditingName ? (
             <>
-              <Row style={{ display: "block", textAlign: "center", padding: 30}}>
-            
-                <Input value="Test" style={{ width: 200, fontSize: 24 }}></Input>
+              <Row
+                style={{ display: "block", textAlign: "center", padding: 30 }}
+              >
+                <Input
+                  value="Test"
+                  style={{ width: 200, fontSize: 24 }}
+                ></Input>
               </Row>
 
               <Button type="primary" style={{ marginRight: 15 }}>
@@ -158,6 +164,16 @@ export default function Recipe() {
                       </Button>
                     </>
                   )}
+
+                  <Divider style={{ marginTop: 50 }} orientation="left">
+                    <h1>Huy hiệu</h1>
+                  </Divider>
+                  <div style={{ textAlign: "left" }}>
+                    <Tag>Đầu bếp</Tag>
+                    <Tag icon={<StarFilled />} color="orange">
+                      Đầu bếp nổi tiếng
+                    </Tag>
+                  </div>
                 </Col>
                 <Col span={15} style={{ padding: "0 15px" }}>
                   <Divider orientation="left">
