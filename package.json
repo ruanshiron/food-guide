@@ -23,6 +23,7 @@
     "next": "10.0.1",
     "npm": "^6.14.8",
     "react": "17.0.1",
+    "react-chat-elements": "^10.13.0",
     "react-dom": "17.0.1",
     "react-i18next": "^11.7.3",
     "sass": "^1.29.0"
