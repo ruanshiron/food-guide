@@ -7,7 +7,7 @@ import {
   Spin,
   Row,
   Col,
-  Image,
+  Modal,
   Avatar,
   Tabs,
   Form,
@@ -23,9 +23,10 @@ import {
   HeartFilled,
   StarFilled,
 } from "@ant-design/icons";
-import { storage, database } from "../../config/firebaseConfig";
+import { storage, database, firebase } from "../../config/firebaseConfig";
 import { useState, useEffect } from "react";
 import useTranslation from "../../intl/useTranslation";
+import { useAuth } from "../../utils/auth/AuthProvider";
 
 const { Title, Paragraph } = Typography;
 const { TextArea } = Input;
@@ -49,6 +50,7 @@ export default function Recipe() {
   const [email, setEmail] = useState("");
   const [name, setName] = useState("");
   const [about, setAbout] = useState("");
+  const [modalVisible, setModalVisible] = useState(false);
 
   const [nameInput, setNameInput] = useState("");
   const [aboutInput, setAboutInput] = useState("");
@@ -57,6 +59,8 @@ export default function Recipe() {
   const [isEditingName, setIsEditingName] = useState(false);
   const [loading, setLoading] = useState(true);
   const { id } = router.query;
+
+  const { user } = useAuth();
 
   async function getData() {
     console.log(id);
@@ -78,16 +82,56 @@ export default function Recipe() {
   }
   useEffect(() => id && getData(), [id]);
 
+  const handleLogout = async () => {
+    await firebase.auth().signOut();
+    router.push(`/`);
+  };
+
   const handleChangeTab = (key) => {
     console.log(key);
   };
 
-  const onFinish = (values) => {
-    console.log("Success:", values);
+  const onSubmitCredential = (values) => {
+    console.log(values);
+    var credential = firebase.auth.EmailAuthProvider.credential(
+      email,
+      values.oldPassword
+    );
+    user
+      .reauthenticateWithCredential(credential)
+      .then(function () {
+        message.success("Xác thực thành công");
+        setModalVisible(false);
+      })
+      .catch(function (error) {
+        console.log("Error: ", error);
+        message.error("Mật khẩu không chính xác");
+      });
   };
 
-  const onFinishFailed = (errorInfo) => {
-    console.log("Failed:", errorInfo);
+  const handleCloseModal = () => {
+    setModalVisible(false);
+  };
+
+  const onFinish = (values) => {
+    if (values.password === values.confirmPassword) {
+      var newPassword = values.password;
+      user
+        .updatePassword(newPassword)
+        .then(function () {
+          message.success(
+            "Thay đổi mật khẩu thành công! Vui lòng đăng nhập lại"
+          );
+          handleLogout();
+        })
+        .catch(function (error) {
+          console.log("Error: ", error);
+          message.warn("Vui lòng nhập mật khẩu cũ");
+          setModalVisible(true);
+        });
+    } else {
+      message.error("Mật khẩu không trùng khớp");
+    }
   };
 
   const handleCancelEditingName = () => {
@@ -100,7 +144,7 @@ export default function Recipe() {
     let userRef = database.collection("users").doc(userId);
     await userRef.update({ name: nameInput });
     setName(nameInput);
-    message.warn("Thay đổi tên thành công");
+    message.success("Thay đổi tên thành công");
   };
 
   const handleCancelEditingAbout = () => {
@@ -113,7 +157,7 @@ export default function Recipe() {
     let userRef = database.collection("users").doc(userId);
     await userRef.update({ about: aboutInput });
     setAbout(aboutInput);
-    message.warn("Thay đổi mô tả thành công");
+    message.success("Thay đổi mô tả thành công");
   };
 
   return loading ? (
@@ -294,14 +338,11 @@ export default function Recipe() {
                 name="basic"
                 initialValues={{ remember: true }}
                 onFinish={onFinish}
-                onFinishFailed={onFinishFailed}
               >
                 <Form.Item
                   label="Mật khẩu mới"
                   name="password"
-                  rules={[
-                    { required: true, message: "Please input your username!" },
-                  ]}
+                  rules={[{ required: true, message: "Nhập mật khẩu mới" }]}
                 >
                   <Input.Password />
                 </Form.Item>
@@ -310,7 +351,7 @@ export default function Recipe() {
                   label="Xác nhận mật khẩu"
                   name="confirmPassword"
                   rules={[
-                    { required: true, message: "Please input your password!" },
+                    { required: true, message: "Nhập xác nhận mật khẩu" },
                   ]}
                 >
                   <Input.Password />
@@ -322,6 +363,30 @@ export default function Recipe() {
                   </Button>
                 </Form.Item>
               </Form>
+
+              <Modal
+                title="Vì lý do bảo mật, vui lòng nhập mật khẩu hiện tại"
+                visible={modalVisible}
+                onCancel={handleCloseModal}
+                footer={null}
+              >
+                <Form onFinish={onSubmitCredential}>
+                  <Form.Item
+                    label="Mật khẩu hiện tại: "
+                    name="oldPassword"
+                    rules={[
+                      { required: true, message: "Nhập mật khẩu hiện tại" },
+                    ]}
+                  >
+                    <Input.Password />
+                  </Form.Item>
+                  <Form.Item>
+                    <Button type="primary" htmlType="submit">
+                      Xác nhận
+                    </Button>
+                  </Form.Item>
+                </Form>
+              </Modal>
             </TabPane>
           </Tabs>
         </Col>
