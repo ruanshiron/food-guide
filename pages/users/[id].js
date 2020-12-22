@@ -13,6 +13,7 @@ import {
   Form,
   Input,
   Tag,
+  message,
 } from "antd";
 import { useRouter } from "next/router";
 import {
@@ -44,8 +45,13 @@ const tailLayout = {
 export default function Recipe() {
   const router = useRouter();
   const { t } = useTranslation();
+  const [userId, setUserId] = useState("");
   const [email, setEmail] = useState("");
   const [name, setName] = useState("");
+  const [about, setAbout] = useState("");
+
+  const [nameInput, setNameInput] = useState("");
+  const [aboutInput, setAboutInput] = useState("");
 
   const [isEditingAbout, setIsEditingAbout] = useState(false);
   const [isEditingName, setIsEditingName] = useState(false);
@@ -60,8 +66,12 @@ export default function Recipe() {
       console.log("No such document!");
     } else {
       snapshot.forEach((doc) => {
+        setUserId(doc.id);
         setEmail(doc.data().email);
         setName(doc.data().name);
+        setNameInput(doc.data().name);
+        setAbout(doc.data().about);
+        setAboutInput(doc.data().about);
         setLoading(false);
       });
     }
@@ -80,6 +90,32 @@ export default function Recipe() {
     console.log("Failed:", errorInfo);
   };
 
+  const handleCancelEditingName = () => {
+    setIsEditingName(false);
+    setNameInput(name);
+  };
+
+  const handleSubmitEditingName = async () => {
+    setIsEditingName(false);
+    let userRef = database.collection("users").doc(userId);
+    await userRef.update({ name: nameInput });
+    setName(nameInput);
+    message.warn("Thay đổi tên thành công");
+  };
+
+  const handleCancelEditingAbout = () => {
+    setIsEditingAbout(false);
+    setAboutInput(about);
+  };
+
+  const handleSubmitEditingAbout = async () => {
+    setIsEditingAbout(false);
+    let userRef = database.collection("users").doc(userId);
+    await userRef.update({ about: aboutInput });
+    setAbout(aboutInput);
+    message.warn("Thay đổi mô tả thành công");
+  };
+
   return loading ? (
     <div style={{ textAlign: "center" }} className="container">
       <Spin spinning={true} indicator={antIcon}></Spin>
@@ -95,15 +131,20 @@ export default function Recipe() {
                 style={{ display: "block", textAlign: "center", padding: 30 }}
               >
                 <Input
-                  value="Test"
+                  value={nameInput}
                   style={{ width: 200, fontSize: 24 }}
+                  onChange={(e) => setNameInput(e.target.value)}
                 ></Input>
               </Row>
 
-              <Button type="primary" style={{ marginRight: 15 }}>
+              <Button
+                type="primary"
+                style={{ marginRight: 15 }}
+                onClick={handleSubmitEditingName}
+              >
                 Lưu
               </Button>
-              <Button type="secondary" onClick={() => setIsEditingName(false)}>
+              <Button type="secondary" onClick={handleCancelEditingName}>
                 Hủy
               </Button>
             </>
@@ -129,19 +170,20 @@ export default function Recipe() {
                     <>
                       <TextArea
                         rows={10}
-                        value="Lorem Ipsum is simply dummy text of the printing and
-                    typesetting industry. Lorem Ipsum has been the industry's
-                    standard dummy text ever since the 1500s, when an unknown
-                    printer took a galley of type and scrambled it to make a
-                    type specimen book."
+                        value={aboutInput}
+                        onChange={(e) => setAboutInput(e.target.value)}
                       />
                       <Row style={{ marginTop: 15, textAlign: "center" }}>
-                        <Button type="primary" style={{ marginRight: 15 }}>
+                        <Button
+                          type="primary"
+                          style={{ marginRight: 15 }}
+                          onClick={handleSubmitEditingAbout}
+                        >
                           Lưu
                         </Button>
                         <Button
                           type="secondary"
-                          onClick={() => setIsEditingAbout(false)}
+                          onClick={handleCancelEditingAbout}
                         >
                           Hủy
                         </Button>
@@ -149,13 +191,7 @@ export default function Recipe() {
                     </>
                   ) : (
                     <>
-                      <p>
-                        Lorem Ipsum is simply dummy text of the printing and
-                        typesetting industry. Lorem Ipsum has been the
-                        industry's standard dummy text ever since the 1500s,
-                        when an unknown printer took a galley of type and
-                        scrambled it to make a type specimen book.
-                      </p>
+                      <p>{about}</p>
                       <Button
                         type="link"
                         onClick={() => setIsEditingAbout(true)}

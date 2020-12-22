@@ -24,6 +24,7 @@ export default function Register() {
           email: res.user.email,
           uid: res.user.uid,
           name: values.name,
+          about: ""
         };
         await database.collection("users").add(user);
         message.success(t("signup_successfully"));

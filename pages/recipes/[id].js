@@ -8,6 +8,7 @@ import { useState, useEffect } from "react";
 import useTranslation from "../../intl/useTranslation";
 import useRatings from "../../hooks/useRatings";
 import Rating from "../../components/Rating";
+import { useAuth } from "../../utils/auth/AuthProvider";
 
 const { Title, Paragraph } = Typography;
 
@@ -80,7 +81,7 @@ export default function Recipe() {
           dataSource={recipe.ingredients}
           renderItem={(item, index) => (
             <List.Item key={index}>
-              <List.Item.Meta title={item.name} />
+              <List.Item.Meta title={item.name} avatar={<b>{index + 1 + "."}</b>}/>
               <div>{item.quantity}</div>
             </List.Item>
           )}
