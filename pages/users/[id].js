@@ -50,6 +50,7 @@ export default function Recipe() {
   const [email, setEmail] = useState("");
   const [name, setName] = useState("");
   const [about, setAbout] = useState("");
+  const [favorites, setFavorites] = useState([]);
   const [modalVisible, setModalVisible] = useState(false);
 
   const [nameInput, setNameInput] = useState("");
@@ -76,10 +77,12 @@ export default function Recipe() {
         setNameInput(doc.data().name);
         setAbout(doc.data().about);
         setAboutInput(doc.data().about);
+        setFavorites(doc.data().favorites);
         setLoading(false);
       });
     }
   }
+
   useEffect(() => id && getData(), [id]);
 
   const handleLogout = async () => {
@@ -302,30 +305,27 @@ export default function Recipe() {
                     <h1>Đã thích</h1>
                   </Divider>
                   <List style={{ marginBottom: 30 }}>
-                    <Card style={{ marginBottom: 16 }} hoverable>
-                      <Card.Meta
-                        style={{ textAlign: "left" }}
-                        title="Gà chiên nước mắm"
-                      />
-                      <Button
-                        style={{ position: "absolute", right: 10, top: 18 }}
-                        type="text"
-                        shape="circle"
-                        icon={<HeartFilled />}
-                      />
-                    </Card>
-                    <Card style={{ marginBottom: 16 }} hoverable>
-                      <Card.Meta
-                        style={{ textAlign: "left" }}
-                        title="Rauuuuuuuu"
-                      />
-                      <Button
-                        style={{ position: "absolute", right: 10, top: 18 }}
-                        type="text"
-                        shape="circle"
-                        icon={<HeartFilled />}
-                      />
-                    </Card>
+                    {favorites.map((favoriteRecipe, index) => {
+                      return (
+                        <Card key={index} style={{ marginBottom: 16 }} hoverable>
+                          <Card.Meta
+                            style={{ textAlign: "left" }}
+                            title={favoriteRecipe.recipe_title}
+                            onClick={() =>
+                              router.push(
+                                `/recipes/${favoriteRecipe.recipe_id}`
+                              )
+                            }
+                          />
+                          <Button
+                            style={{ position: "absolute", right: 10, top: 18 }}
+                            type="text"
+                            shape="circle"
+                            icon={<HeartFilled />}
+                          />
+                        </Card>
+                      );
+                    })}
                   </List>
                 </Col>
               </Row>

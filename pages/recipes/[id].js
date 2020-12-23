@@ -1,9 +1,18 @@
-import { Button, Divider, List, Typography, Rate, Spin, Tooltip } from "antd";
+import {
+  Button,
+  Divider,
+  List,
+  Typography,
+  Rate,
+  Spin,
+  Tooltip,
+  message,
+} from "antd";
 import { useRouter } from "next/router";
-import { LoadingOutlined, HeartOutlined } from "@ant-design/icons";
+import { LoadingOutlined, HeartOutlined, HeartFilled } from "@ant-design/icons";
 import Comment from "../../components/Comment";
 import Item from "antd/lib/list/Item";
-import { storage, database } from "../../config/firebaseConfig";
+import { storage, database, firebase } from "../../config/firebaseConfig";
 import { useState, useEffect } from "react";
 import useTranslation from "../../intl/useTranslation";
 import useRatings from "../../hooks/useRatings";
@@ -20,8 +29,11 @@ export default function Recipe() {
   const { t } = useTranslation();
   const [recipe, setRecipe] = useState({});
   const [loading, setLoading] = useState(true);
+  const [isFavorited, setIsFavorited] = useState(false);
   const { id } = router.query;
   const { ratings, average } = useRatings(id);
+
+  const { user } = useAuth();
 
   async function getData() {
     const ref = database.collection("recipes").doc(id);
@@ -40,7 +52,71 @@ export default function Recipe() {
       setLoading(false);
     }
   }
-  useEffect(() => id && getData(), [id]);
+
+  async function getFavorite() {
+    let userRef = database.collection("users");
+    let snapshot = await userRef.where("uid", "==", user.uid).limit(1).get();
+    if (snapshot.empty) {
+      console.log("No such document!");
+    } else {
+      snapshot.forEach(async (doc) => {
+        let res = await database.collection("users").doc(doc.id).get();
+        let favorites = res.data().favorites;
+        if (favorites.filter((item) => item.recipe_id === id).length > 0) {
+          setIsFavorited(true);
+        } else {
+          setIsFavorited(false);
+        }
+      });
+    }
+  }
+
+  useEffect(() => {
+    if (id && user) {
+      getData();
+      getFavorite();
+    }
+  }, [id, user]);
+
+  const userRef = database.collection("users");
+
+  const handleLike = async () => {
+    setIsFavorited(true);
+    let snapshot = await userRef.where("uid", "==", user.uid).limit(1).get();
+    if (snapshot.empty) {
+      console.log("No such document!");
+    } else {
+      snapshot.forEach((doc) => {
+        let ref = database.collection("users").doc(doc.id);
+        ref.update({
+          favorites: firebase.firestore.FieldValue.arrayUnion({
+            recipe_id: id,
+            recipe_title: recipe.title,
+          }),
+        });
+      });
+    }
+    message.success("Đã thêm công thức yêu thích");
+  };
+
+  const handleUnlike = async () => {
+    setIsFavorited(false);
+    let snapshot = await userRef.where("uid", "==", user.uid).limit(1).get();
+    if (snapshot.empty) {
+      console.log("No such document!");
+    } else {
+      snapshot.forEach((doc) => {
+        let ref = database.collection("users").doc(doc.id);
+        ref.update({
+          favorites: firebase.firestore.FieldValue.arrayRemove({
+            recipe_id: id,
+            recipe_title: recipe.title,
+          }),
+        });
+      });
+    }
+    message.success("Đã xóa công thức yêu thích");
+  };
 
   return loading ? (
     <div style={{ textAlign: "center" }} className="container">
@@ -56,12 +132,23 @@ export default function Recipe() {
 
         <Typography style={{ position: "relative" }}>
           <Title>{recipe.title}</Title>
-          <Button
-            style={{ position: "absolute", right: 10, top: 0 }}
-            type="text"
-            shape="circle"
-            icon={<HeartOutlined style={{ fontSize: 30 }} />}
-          />
+          {isFavorited ? (
+            <Button
+              style={{ position: "absolute", right: 10, top: 0 }}
+              type="text"
+              shape="circle"
+              icon={<HeartFilled style={{ fontSize: 30 }} />}
+              onClick={handleUnlike}
+            />
+          ) : (
+            <Button
+              style={{ position: "absolute", right: 10, top: 0 }}
+              type="text"
+              shape="circle"
+              icon={<HeartOutlined style={{ fontSize: 30 }} />}
+              onClick={handleLike}
+            />
+          )}
           <Paragraph>{recipe.description}</Paragraph>
         </Typography>
         <Item>
@@ -81,7 +168,10 @@ export default function Recipe() {
           dataSource={recipe.ingredients}
           renderItem={(item, index) => (
             <List.Item key={index}>
-              <List.Item.Meta title={item.name} avatar={<b>{index + 1 + "."}</b>}/>
+              <List.Item.Meta
+                title={item.name}
+                avatar={<b>{index + 1 + "."}</b>}
+              />
               <div>{item.quantity}</div>
             </List.Item>
           )}
