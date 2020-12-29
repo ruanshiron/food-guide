@@ -13,7 +13,7 @@ import { UserOutlined } from "@ant-design/icons";
 const Navbar = () => {
   const [visible, setVisible] = useState(false);
   const router = useRouter();
-  const { user } = useAuth();
+  const { user, role } = useAuth();
 
   const handleClick = (e) => {
     console.log("click ", e);
@@ -38,6 +38,11 @@ const Navbar = () => {
       {user && (
         <Menu.Item>
           <Link href={`/users/${user.uid}`}>{t("profile")}</Link>
+        </Menu.Item>
+      )}
+      {role === "admin" && (
+        <Menu.Item>
+          <Link href={`/admin`}>{t("admin")}</Link>
         </Menu.Item>
       )}
 

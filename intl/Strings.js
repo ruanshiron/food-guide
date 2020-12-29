@@ -75,6 +75,7 @@ export const LangStrings = {
     signup: "Đăng ký",
     logout: "Đăng xuất",
     profile: "Tài khoản",
+    admin: "Quản trị",
     login_error: "Không thể đăng nhập, kiểm tra lại thông tin tài khoản và mật khẩu",
     signup_error: "Không thể đăng ký, email này đã tồn tại",
     signup_successfully: "Đăng ký thành công, chuyển về trang chủ",
