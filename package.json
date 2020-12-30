@@ -8,6 +8,8 @@
     "start": "next start"
   },
   "dependencies": {
+    "@chatscope/chat-ui-kit-react": "^1.1.0",
+    "@chatscope/chat-ui-kit-styles": "^1.0.5",
     "@fortawesome/fontawesome-svg-core": "^1.2.32",
     "@fortawesome/free-brands-svg-icons": "^5.15.1",
     "@fortawesome/free-regular-svg-icons": "^5.15.1",

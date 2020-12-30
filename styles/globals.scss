@@ -93,7 +93,6 @@
   vertical-align: middle;
 }
 
-
 .login-form {
   max-width: 300px;
   margin: auto;
@@ -123,4 +122,18 @@
 
 .chat-list {
   height: calc(100vh - 206px);
+}
+
+#chat-box {
+  position: fixed;
+  bottom: 0px;
+  right: 32px;
+}
+
+.cs-message--outgoing .cs-message__content {
+  border-radius: 0.7em;
+}
+
+.cs-conversation-header {
+  padding: 0.27em 0.9em;
 }

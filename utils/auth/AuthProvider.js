@@ -29,8 +29,16 @@ export function AuthProvider({ children }) {
       if (!user) {
         setUser(null);
       } else {
-        setUser(user);
-        getUserRole(user);
+        database
+          .collection("users")
+          .where("uid", "==", user.uid)
+          .limit(1)
+          .get()
+          .then((snap) => {
+            let [id] = snap.docs.map((doc) => doc.id);
+            setUser({ ...user, id });
+            getUserRole(user);
+          });
       }
     });
   };

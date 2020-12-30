@@ -4,6 +4,7 @@ import Navbar from "./Navbar";
 const { Footer, Content } = Layout;
 import { createContext, useState } from "react";
 import MyFooter from "./Footer";
+import { ChatBox } from "./ChatBox";
 
 export const defaultLocale = "vi";
 export const locales = ["jp", "vi"];
@@ -23,6 +24,7 @@ const Main = ({ children }) => {
           <Content>{children}</Content>
           <MyFooter />
         </Layout>
+        <ChatBox />
       </LanguageContext.Provider>
     </>
   );
