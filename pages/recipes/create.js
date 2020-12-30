@@ -23,6 +23,7 @@ export default function create() {
 
   const onSubmitForm = async (data) => {
     try {
+      data.author = "user"
       let res = await database.collection("recipes").add(data);
       let { objectID } = await searchIndex.saveObject({
         objectID: res.id,

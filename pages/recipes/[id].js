@@ -30,6 +30,7 @@ export default function Recipe() {
   const [recipe, setRecipe] = useState({});
   const [loading, setLoading] = useState(true);
   const [isFavorited, setIsFavorited] = useState(false);
+  const [isPurchased, setIsPurchased] = useState(true);
   const { id } = router.query;
   const { ratings, average } = useRatings(id);
 
@@ -78,6 +79,13 @@ export default function Recipe() {
     }
   }, [id, user]);
 
+  useEffect(() => {
+    console.log(recipe.author);
+    if (recipe.author && recipe.author === "admin") {
+      if (!isFavorited) setIsPurchased(false);
+    }
+  }, [recipe]);
+
   const userRef = database.collection("users");
 
   const handleLike = async () => {
@@ -118,7 +126,35 @@ export default function Recipe() {
     message.success("Đã xóa công thức yêu thích");
   };
 
-  return loading ? (
+  const handlePurchase = () => {
+    setIsPurchased(true);
+    handleLike();
+    message.success("Đã mua công thức");
+  };
+
+  return !isPurchased ? (
+    <div style={{ textAlign: "center", fontSize: 18 }} className="container">
+      Bạn cần phải mua để xem được công thức này
+      <div style={{ textAlign: "center", padding: 15 }}>
+        <Button
+          type="link"
+          size="large"
+          style={{ margin: 10 }}
+          onClick={() => window.history.back()}
+        >
+          Quay lại
+        </Button>
+        <Button
+          type="primary"
+          size="large"
+          style={{ margin: 10 }}
+          onClick={handlePurchase}
+        >
+          Mua
+        </Button>
+      </div>
+    </div>
+  ) : loading ? (
     <div style={{ textAlign: "center" }} className="container">
       <Spin spinning={true} indicator={antIcon}></Spin>
     </div>
