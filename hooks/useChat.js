@@ -61,6 +61,7 @@ export const useChat = () => {
       .collection("users")
       .doc(user.id)
       .collection("messages")
+      .orderBy('createdAt')
       .onSnapshot((q) => {
         q.docChanges().forEach((change) => {
           if (change.type === "added") {
