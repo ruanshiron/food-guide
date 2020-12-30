@@ -25,7 +25,8 @@ export default function Register() {
           uid: res.user.uid,
           name: values.name,
           about: "",
-          role: "user"
+          role: "user",
+          favorites: [],
         };
         await database.collection("users").add(user);
         message.success(t("signup_successfully"));
